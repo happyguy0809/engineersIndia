@@ -3,9 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Engineers India - Precision Machining Solutions</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>Engineers India - Tier 1 Precision Machining Solutions</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
+        :root {
+            --primary: #0A0E27;
+            --primary-light: #1A1F3A;
+            --accent: #00D4FF;
+            --accent-warm: #FF6B35;
+            --success: #00C896;
+            --warning: #FFD23F;
+            --text-primary: #E8EAED;
+            --text-secondary: #9AA0A6;
+            --surface: #1E1E1E;
+            --surface-light: #2A2A2A;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,352 +28,326 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             line-height: 1.6;
-            color: #333;
+            color: var(--text-primary);
+            background: var(--primary);
             overflow-x: hidden;
         }
 
-        /* Header */
+        /* Modern Header */
         .header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            padding: 1rem 0;
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
         }
 
         .nav-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 2rem;
+            padding: 1rem 2rem;
         }
 
         .logo {
             font-size: 1.8rem;
-            font-weight: bold;
+            font-weight: 700;
             display: flex;
             align-items: center;
+            background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .logo i {
-            margin-right: 0.5rem;
-            color: #ffd700;
+            margin-right: 0.75rem;
+            color: var(--accent);
+            animation: spin 8s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .nav-menu {
             display: flex;
             list-style: none;
-        }
-
-        .nav-menu li {
-            margin-left: 2rem;
+            align-items: center;
+            gap: 2rem;
         }
 
         .nav-menu a {
-            color: white;
+            color: var(--text-primary);
             text-decoration: none;
-            transition: color 0.3s;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
         }
 
         .nav-menu a:hover {
-            color: #ffd700;
+            color: var(--accent);
+            background: var(--glass);
+        }
+
+        .quick-quote-btn {
+            background: linear-gradient(135deg, var(--accent), #0099CC);
+            color: var(--primary);
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .quick-quote-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.4);
         }
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, rgba(30,60,114,0.9), rgba(42,82,152,0.9)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23f0f0f0" width="1200" height="600"/><g fill="%23ddd"><circle cx="200" cy="150" r="50"/><circle cx="600" cy="300" r="80"/><circle cx="1000" cy="200" r="60"/></g></svg>');
-            background-size: cover;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             align-items: center;
-            text-align: center;
-            color: white;
             position: relative;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
+                linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 212, 255, 0.03) 2px,
+                    rgba(0, 212, 255, 0.03) 4px
+                ),
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 107, 53, 0.03) 2px,
+                    rgba(255, 107, 53, 0.03) 4px
+                );
+            animation: grid-move 20s linear infinite;
+        }
+
+        @keyframes grid-move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(40px, 40px); }
         }
 
         .hero-content {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 0 2rem;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            animation: fadeInUp 1s ease;
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-            animation: fadeInUp 1s ease 0.2s both;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: #ffd700;
-            color: #1e3c72;
-            padding: 15px 30px;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: bold;
-            transition: transform 0.3s, box-shadow 0.3s;
-            animation: fadeInUp 1s ease 0.4s both;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(255,215,0,0.3);
-        }
-
-        /* About Section */
-        .about {
-            padding: 100px 0;
-            background: #f8f9fa;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: #1e3c72;
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 3px;
-            background: #ffd700;
-        }
-
-        .about-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 3rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
             align-items: center;
+            position: relative;
+            z-index: 2;
         }
 
-        .about-text {
+        .hero-text h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .hero-description {
             font-size: 1.1rem;
-            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.7;
         }
 
-        .highlight-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        .hero-stats {
+            display: flex;
             gap: 2rem;
-            margin-top: 2rem;
+            margin-bottom: 2rem;
         }
 
         .stat-item {
             text-align: center;
-            padding: 1.5rem;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         .stat-number {
             font-size: 2rem;
-            font-weight: bold;
-            color: #1e3c72;
+            font-weight: 800;
+            color: var(--accent);
+            display: block;
         }
 
         .stat-label {
-            color: #666;
-            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
         }
 
-        /* Services Section */
-        .services {
-            padding: 100px 0;
-            background: white;
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
 
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), #0099CC);
+            color: var(--primary);
+            padding: 16px 32px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .service-card {
-            background: #f8f9fa;
-            padding: 2rem;
-            border-radius: 15px;
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid #e9ecef;
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
         }
 
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 30px rgba(0,0,0,0.1);
-        }
-
-        .service-icon {
-            font-size: 3rem;
-            color: #1e3c72;
-            margin-bottom: 1rem;
-        }
-
-        .service-card h3 {
-            color: #1e3c72;
-            margin-bottom: 1rem;
-        }
-
-        /* Customers Section */
-        .customers {
-            padding: 100px 0;
-            background: #1e3c72;
-            color: white;
-            text-align: center;
-        }
-
-        .customers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .customer-card {
-            background: rgba(255,255,255,0.1);
-            padding: 2rem 1rem;
-            border-radius: 10px;
+        .btn-secondary {
+            background: var(--glass);
+            color: var(--text-primary);
+            padding: 16px 32px;
+            border: 2px solid var(--glass-border);
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: transform 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .customer-card:hover {
-            transform: scale(1.05);
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
         }
 
-        /* Equipment Section */
-        .equipment {
-            padding: 100px 0;
-            background: #f8f9fa;
-        }
-
-        .equipment-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 3rem;
-        }
-
-        .equipment-item {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border-left: 4px solid #1e3c72;
-        }
-
-        /* Contact Section */
-        .contact {
-            padding: 100px 0;
-            background: white;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 3rem;
-            margin-top: 3rem;
-        }
-
-        .contact-info {
-            background: #1e3c72;
-            color: white;
-            padding: 3rem;
-            border-radius: 15px;
-        }
-
-        .contact-item {
+        .hero-visual {
             display: flex;
             align-items: center;
-            margin-bottom: 2rem;
+            justify-content: center;
+            position: relative;
         }
 
-        .contact-item i {
-            font-size: 1.5rem;
-            margin-right: 1rem;
-            color: #ffd700;
+        .floating-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 400px;
+            animation: float 6s ease-in-out infinite;
         }
 
-        .contact-form {
-            background: #f8f9fa;
-            padding: 3rem;
-            border-radius: 15px;
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
         }
 
-        .form-group {
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
             margin-bottom: 1.5rem;
         }
 
-        .form-group input,
-        .form-group textarea {
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .card-subtitle {
+            font-size: 0.9rem;
+            color: var(--accent);
+        }
+
+        /* Quick Quote Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
         }
 
-        .form-group textarea {
-            height: 120px;
-            resize: vertical;
+        .modal-content {
+            background: var(--surface);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            margin: 5% auto;
+            padding: 0;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease;
         }
 
-        .submit-btn {
-            background: #1e3c72;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background 0.3s;
-        }
-
-        .submit-btn:hover {
-            background: #2a5298;
-        }
-
-        /* Footer */
-        .footer {
-            background: #333;
-            color: white;
-            text-align: center;
-            padding: 2rem 0;
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
+        @keyframes modalSlideIn {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(-50px);
             }
             to {
                 opacity: 1;
@@ -366,23 +355,540 @@
             }
         }
 
-        /* Mobile Responsive */
+        .modal-header {
+            background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+            color: var(--primary);
+            padding: 2rem;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+        }
+
+        .modal-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .close {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: background 0.3s ease;
+        }
+
+        .close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Form Styling */
+        .form-grid {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(0, 212, 255, 0.05);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .file-upload input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--glass);
+            border: 2px dashed var(--glass-border);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .file-upload-label:hover {
+            border-color: var(--accent);
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .file-upload-icon {
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+
+        /* Sections */
+        .section {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Capabilities Section */
+        .capabilities {
+            background: var(--primary-light);
+        }
+
+        .capabilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .capability-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .capability-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-warm));
+            transition: left 0.5s ease;
+        }
+
+        .capability-card:hover::before {
+            left: 0;
+        }
+
+        .capability-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.1);
+        }
+
+        .capability-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .capability-card h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .capability-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .capability-features {
+            list-style: none;
+        }
+
+        .capability-features li {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .capability-features li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        /* Customers Section */
+        .customers {
+            background: var(--surface);
+        }
+
+        .customers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .customer-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 2rem 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .customer-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+
+        .customer-card:hover::before {
+            opacity: 1;
+            top: -100%;
+            left: -100%;
+        }
+
+        .customer-card:hover {
+            transform: scale(1.05);
+            border-color: var(--accent);
+        }
+
+        .customer-logo {
+            background: var(--glass);
+            color: var(--text-primary);
+            padding: 1rem;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Equipment Section */
+        .equipment {
+            background: var(--primary);
+        }
+
+        .equipment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .equipment-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .equipment-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 15px 30px rgba(0, 212, 255, 0.1);
+        }
+
+        .equipment-card h4 {
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .equipment-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .equipment-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .spec-item {
+            background: rgba(0, 212, 255, 0.05);
+            padding: 0.75rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .spec-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .spec-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Contact Section */
+        .contact {
+            background: var(--surface);
+            position: relative;
+        }
+
+        .contact::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 80% 20%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(255, 107, 53, 0.1) 0%, transparent 50%);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .contact-info {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 3rem;
+            border-radius: 25px;
+        }
+
+        .contact-info h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: rgba(0, 212, 255, 0.05);
+            border-radius: 12px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .contact-item i {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-top: 0.25rem;
+        }
+
+        .contact-form {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 3rem;
+            border-radius: 25px;
+        }
+
+        .contact-form h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary);
+            border-top: 1px solid var(--glass-border);
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Responsive Design */
         @media (max-width: 768px) {
             .nav-menu {
                 display: none;
             }
 
-            .hero h1 {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            .hero-text h1 {
                 font-size: 2.5rem;
             }
 
-            .hero p {
-                font-size: 1.1rem;
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
             }
 
             .section-title {
                 font-size: 2rem;
             }
+
+            .equipment-grid,
+            .capabilities-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .customers-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
         }
     </style>
 </head>
@@ -391,17 +897,17 @@
     <header class="header">
         <div class="nav-container">
             <div class="logo">
-                <i class="fas fa-cog"></i>
+                <i class="fas fa-cogs"></i>
                 Engineers India
             </div>
             <nav>
                 <ul class="nav-menu">
                     <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#services">Services</a></li>
+                    <li><a href="#capabilities">Capabilities</a></li>
                     <li><a href="#customers">Customers</a></li>
                     <li><a href="#equipment">Equipment</a></li>
                     <li><a href="#contact">Contact</a></li>
+                    <li><a href="#" class="quick-quote-btn" onclick="openQuoteModal()">Quick Quote</a></li>
                 </ul>
             </nav>
         </div>
@@ -410,132 +916,325 @@
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-content">
-            <h1>Precision Machining Excellence</h1>
-            <p>ISO certified organization with over 30 years of trusted service in the machining industry</p>
-            <a href="#contact" class="cta-button">Get Quote Today</a>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="about">
-        <div class="container">
-            <h2 class="section-title">About Engineers India</h2>
-            <div class="about-grid">
-                <div class="about-text">
-                    <p>Established in the early 1990s, Engineers India is an ISO certified organization with experienced and respected promoters. As a trusted name for over thirty years, we continue to deliver excellence and innovation in the machining industry.</p>
-                    
-                    <p>Serving industries such as railways, automotive, valves and pumps, tractors, earthmoving parts, air circuit breakers and agriculture, we are a reliable supplier committed to quality through our state-of-the-art facilities and cutting-edge technologies, ensuring precision components.</p>
-                    
-                    <p>We have proudly served as Tier one supplier to many huge organizations and manufacturers, building lasting partnerships based on quality, reliability, and innovation.</p>
+            <div class="hero-text">
+                <h1>Tier 1 Precision Machining Excellence</h1>
+                <p class="hero-subtitle">ISO Certified • 30+ Years • Trusted Partner</p>
+                <p class="hero-description">Leading precision machining supplier to automotive, railway, and industrial OEMs. From prototype to high-volume production, we deliver quality components that meet your exact specifications.</p>
+                
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">30+</span>
+                        <span class="stat-label">Years</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">500+</span>
+                        <span class="stat-label">Components</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">99%</span>
+                        <span class="stat-label">Quality Rate</span>
+                    </div>
                 </div>
-                <div class="highlight-stats">
-                    <div class="stat-item">
-                        <div class="stat-number">30+</div>
-                        <div class="stat-label">Years Experience</div>
+
+                <div class="hero-actions">
+                    <button class="btn-primary" onclick="openQuoteModal()">
+                        <i class="fas fa-calculator"></i>
+                        Get Instant Quote
+                    </button>
+                    <a href="#capabilities" class="btn-secondary">
+                        <i class="fas fa-cogs"></i>
+                        View Capabilities
+                    </a>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="floating-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-industry"></i>
+                        </div>
+                        <div>
+                            <div class="card-title">Quick Machining Quote</div>
+                            <div class="card-subtitle">24-Hour Response</div>
+                        </div>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-number">ISO</div>
-                        <div class="stat-label">Certified</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">Tier 1</div>
-                        <div class="stat-label">Supplier</div>
-                    </div>
+                    <div style="height: 4px; background: linear-gradient(90deg, var(--accent), var(--accent-warm)); border-radius: 2px; margin-bottom: 1rem;"></div>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Upload your drawings and specifications for an instant quote on precision machined components.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Services Section -->
-    <section id="services" class="services">
+    <!-- Quick Quote Modal -->
+    <div id="quoteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="closeQuoteModal()">&times;</span>
+                <h2>Quick Machining Quote</h2>
+                <p>Get your quote within 24 hours</p>
+            </div>
+            <div class="modal-body">
+                <form id="quoteForm">
+                    <div class="form-grid">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Company Name *</label>
+                                <input type="text" name="company" required placeholder="Your Company Name">
+                            </div>
+                            <div class="form-group">
+                                <label>Contact Person *</label>
+                                <input type="text" name="contact_person" required placeholder="Your Name">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Email *</label>
+                                <input type="email" name="email" required placeholder="your.email@company.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Phone</label>
+                                <input type="tel" name="phone" placeholder="+91 XXXXX XXXXX">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Component Type *</label>
+                                <select name="component_type" required>
+                                    <option value="">Select Component Type</option>
+                                    <option value="automotive">Automotive Components</option>
+                                    <option value="railway">Railway Components</option>
+                                    <option value="tractor">Tractor & Engine Parts</option>
+                                    <option value="electrical">Electrical Components</option>
+                                    <option value="industrial">Industrial Parts</option>
+                                    <option value="agriculture">Agriculture Equipment</option>
+                                    <option value="custom">Custom Components</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Expected Quantity</label>
+                                <select name="quantity">
+                                    <option value="">Select Quantity Range</option>
+                                    <option value="prototype">Prototype (1-10)</option>
+                                    <option value="small">Small Batch (10-100)</option>
+                                    <option value="medium">Medium Batch (100-1000)</option>
+                                    <option value="large">Large Batch (1000-10000)</option>
+                                    <option value="mass">Mass Production (10000+)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Material Specification</label>
+                                <input type="text" name="material" placeholder="e.g., Steel, Aluminum, Cast Iron">
+                            </div>
+                            <div class="form-group">
+                                <label>Timeline Required</label>
+                                <select name="timeline">
+                                    <option value="">Select Timeline</option>
+                                    <option value="urgent">Urgent (1-2 weeks)</option>
+                                    <option value="normal">Normal (3-4 weeks)</option>
+                                    <option value="flexible">Flexible (1-2 months)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Project Description *</label>
+                            <textarea name="description" required placeholder="Describe your machining requirements, tolerances, surface finish, and any special requirements..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Upload Drawings/Specifications</label>
+                            <div class="file-upload">
+                                <input type="file" id="drawings" name="drawings[]" multiple accept=".pdf,.dwg,.step,.iges,.jpg,.png">
+                                <label for="drawings" class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt file-upload-icon"></i>
+                                    <div>
+                                        <strong>Click to upload files</strong>
+                                        <br>
+                                        <small>PDF, DWG, STEP, IGES formats accepted</small>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(0, 212, 255, 0.1); padding: 1rem; border-radius: 8px; border-left: 4px solid var(--accent);">
+                            <p style="color: var(--text-primary); font-size: 0.9rem; margin: 0;">
+                                <i class="fas fa-info-circle" style="color: var(--accent); margin-right: 0.5rem;"></i>
+                                We'll review your requirements and provide a detailed quote within 24 hours. For urgent requirements, call us directly.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
+                        <button type="button" class="btn-secondary" onclick="closeQuoteModal()">Cancel</button>
+                        <button type="submit" class="btn-primary">
+                            <span class="submit-text">Submit Quote Request</span>
+                            <span class="loading" style="display: none;"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Capabilities Section -->
+    <section id="capabilities" class="capabilities section">
         <div class="container">
-            <h2 class="section-title">Our Product Portfolio</h2>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">
+            <h2 class="section-title">Our Capabilities</h2>
+            <p class="section-subtitle">Advanced machining solutions across multiple industries with precision and reliability</p>
+            
+            <div class="capabilities-grid">
+                <div class="capability-card">
+                    <div class="capability-icon">
                         <i class="fas fa-car"></i>
                     </div>
                     <h3>Automotive Components</h3>
-                    <p>Oil Pumps and Water Pumps for automobile engines, Torque Plates for Brakes, Gear Box End covers, and various engine components</p>
+                    <p>Precision machined automotive parts for leading OEMs with stringent quality requirements.</p>
+                    <ul class="capability-features">
+                        <li>Oil & Water Pumps for engines</li>
+                        <li>Torque Plates for brake systems</li>
+                        <li>Gear Box End covers</li>
+                        <li>Engine mounting components</li>
+                        <li>Transmission parts</li>
+                    </ul>
                 </div>
-                <div class="service-card">
-                    <div class="service-icon">
+                
+                <div class="capability-card">
+                    <div class="capability-icon">
                         <i class="fas fa-tractor"></i>
                     </div>
                     <h3>Tractor & Engine Parts</h3>
-                    <p>Timing Cover variations for Diesel and Petrol engines, Chain cases (Inner & Outer), Cylinder Head covers, and Link Support variations</p>
+                    <p>Heavy-duty components for agricultural and industrial applications.</p>
+                    <ul class="capability-features">
+                        <li>Timing Cover variations (Diesel/Petrol)</li>
+                        <li>Chain cases (Inner & Outer)</li>
+                        <li>Cylinder Head covers</li>
+                        <li>Link Support variations</li>
+                        <li>Engine block components</li>
+                    </ul>
                 </div>
-                <div class="service-card">
-                    <div class="service-icon">
+                
+                <div class="capability-card">
+                    <div class="capability-icon">
                         <i class="fas fa-train"></i>
                     </div>
                     <h3>Railway Components</h3>
-                    <p>Specialized machining for railway industry applications with precision engineering and quality assurance</p>
+                    <p>Critical railway components meeting international safety and quality standards.</p>
+                    <ul class="capability-features">
+                        <li>Brake system components</li>
+                        <li>Coupling mechanisms</li>
+                        <li>Suspension parts</li>
+                        <li>Safety-critical components</li>
+                        <li>Rolling stock parts</li>
+                    </ul>
                 </div>
-                <div class="service-card">
-                    <div class="service-icon">
+                
+                <div class="capability-card">
+                    <div class="capability-icon">
                         <i class="fas fa-bolt"></i>
                     </div>
                     <h3>Electrical Components</h3>
-                    <p>Air Circuit Breaker Components for GEC Alstom and other electrical applications with precise specifications</p>
+                    <p>Precision components for electrical and power systems applications.</p>
+                    <ul class="capability-features">
+                        <li>Air Circuit Breaker Components</li>
+                        <li>Switch gear housings</li>
+                        <li>Electrical enclosures</li>
+                        <li>Power system components</li>
+                        <li>Control panel parts</li>
+                    </ul>
                 </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-tools"></i>
+                
+                <div class="capability-card">
+                    <div class="capability-icon">
+                        <i class="fas fa-industry"></i>
                     </div>
-                    <h3>Industrial Parts</h3>
-                    <p>Inlet & Exhaust Manifold variations, Hydraulic support components, Wall covers, and S-manifold systems</p>
+                    <h3>Industrial Manufacturing</h3>
+                    <p>Custom industrial components for diverse manufacturing applications.</p>
+                    <ul class="capability-features">
+                        <li>Inlet & Exhaust Manifolds</li>
+                        <li>Hydraulic support components</li>
+                        <li>Wall covers & housings</li>
+                        <li>S-manifold systems</li>
+                        <li>Custom industrial parts</li>
+                    </ul>
                 </div>
-                <div class="service-card">
-                    <div class="service-icon">
+                
+                <div class="capability-card">
+                    <div class="capability-icon">
                         <i class="fas fa-seedling"></i>
                     </div>
                     <h3>Agriculture Equipment</h3>
-                    <p>Precision machined components for agricultural machinery and equipment with durability focus</p>
+                    <p>Durable components designed for harsh agricultural environments.</p>
+                    <ul class="capability-features">
+                        <li>Implement components</li>
+                        <li>Harvester parts</li>
+                        <li>Irrigation system components</li>
+                        <li>Farm equipment housings</li>
+                        <li>Agricultural machinery parts</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Customers Section -->
-    <section id="customers" class="customers">
+    <section id="customers" class="customers section">
         <div class="container">
-            <h2 class="section-title" style="color: white;">Our Valued Customers</h2>
+            <h2 class="section-title">Trusted by Industry Leaders</h2>
+            <p class="section-subtitle">Tier 1 supplier to leading OEMs across automotive, railway, and industrial sectors</p>
+            
             <div class="customers-grid">
                 <div class="customer-card">
+                    <div class="customer-logo">GEC ALSTHOM</div>
                     <h4>GEC Alsthom</h4>
                 </div>
                 <div class="customer-card">
+                    <div class="customer-logo">ASHOK LEYLAND</div>
                     <h4>Ashok Leyland</h4>
                 </div>
                 <div class="customer-card">
+                    <div class="customer-logo">ROYAL ENFIELD</div>
                     <h4>Royal Enfield</h4>
                 </div>
                 <div class="customer-card">
+                    <div class="customer-logo">AUTOLEC</div>
                     <h4>Autolec (SFL Pump)</h4>
                 </div>
                 <div class="customer-card">
-                    <h4>Same Deustche</h4>
+                    <div class="customer-logo">SAME DEUTZ</div>
+                    <h4>Same Deutz-Fahr</h4>
                 </div>
                 <div class="customer-card">
+                    <div class="customer-logo">BRAKES INDIA</div>
                     <h4>Brakes India</h4>
                 </div>
                 <div class="customer-card">
-                    <h4>Heavy Vehicles Factory (Avadi)</h4>
+                    <div class="customer-logo">HVF AVADI</div>
+                    <h4>Heavy Vehicles Factory</h4>
                 </div>
                 <div class="customer-card">
+                    <div class="customer-logo">SEYOON TECH</div>
                     <h4>Seyoon Tech</h4>
                 </div>
                 <div class="customer-card">
+                    <div class="customer-logo">BERKEL ENG</div>
                     <h4>Berkel Engineering</h4>
                 </div>
                 <div class="customer-card">
+                    <div class="customer-logo">RANE POWER</div>
                     <h4>Rane Power Steering</h4>
                 </div>
                 <div class="customer-card">
+                    <div class="customer-logo">SANMAR IND</div>
                     <h4>Sanmar Industries</h4>
                 </div>
                 <div class="customer-card">
+                    <div class="customer-logo">SIBAR AUTO</div>
                     <h4>Sibar Autoparts</h4>
                 </div>
             </div>
@@ -543,95 +1242,223 @@
     </section>
 
     <!-- Equipment Section -->
-    <section id="equipment" class="equipment">
+    <section id="equipment" class="equipment section">
         <div class="container">
-            <h2 class="section-title">Advanced Equipment & Quality Control</h2>
-            <div class="equipment-list">
-                <div class="equipment-item">
-                    <h4>BFW BMV40 TC20 Vertical Machining Centre</h4>
-                    <p>4-axis and 3-axis control capabilities</p>
+            <h2 class="section-title">State-of-the-Art Equipment</h2>
+            <p class="section-subtitle">Advanced CNC machining centers and precision quality control systems</p>
+            
+            <div class="equipment-grid">
+                <div class="equipment-card">
+                    <h4>
+                        <div class="equipment-icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        BFW BMV40 TC20 VMC
+                    </h4>
+                    <p>Advanced 4-axis and 3-axis vertical machining center for complex precision operations.</p>
+                    <div class="equipment-specs">
+                        <div class="spec-item">
+                            <div class="spec-label">Control</div>
+                            <div class="spec-value">4-axis / 3-axis</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Application</div>
+                            <div class="spec-value">Complex Parts</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="equipment-item">
-                    <h4>YANG EAGLE 600 Vertical Machining Centre</h4>
-                    <p>3-axis control precision machining</p>
+
+                <div class="equipment-card">
+                    <h4>
+                        <div class="equipment-icon">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        YANG EAGLE 600 VMC
+                    </h4>
+                    <p>High-precision 3-axis vertical machining center with superior surface finish capabilities.</p>
+                    <div class="equipment-specs">
+                        <div class="spec-item">
+                            <div class="spec-label">Control</div>
+                            <div class="spec-value">3-axis CNC</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Specialty</div>
+                            <div class="spec-value">Surface Finish</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="equipment-item">
-                    <h4>WHACHEON CNC Lathe</h4>
-                    <p>2 Spindle (300mm chuck) configuration</p>
+
+                <div class="equipment-card">
+                    <h4>
+                        <div class="equipment-icon">
+                            <i class="fas fa-circle-notch"></i>
+                        </div>
+                        WHACHEON CNC Lathe
+                    </h4>
+                    <p>Dual spindle CNC lathe system designed for high-volume production requirements.</p>
+                    <div class="equipment-specs">
+                        <div class="spec-item">
+                            <div class="spec-label">Configuration</div>
+                            <div class="spec-value">2 Spindle</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Chuck Size</div>
+                            <div class="spec-value">300mm</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="equipment-item">
-                    <h4>TATA V500 PLUS Vertical Machining Center</h4>
-                    <p>4-axis control for complex operations</p>
+
+                <div class="equipment-card">
+                    <h4>
+                        <div class="equipment-icon">
+                            <i class="fas fa-cube"></i>
+                        </div>
+                        TATA V500 PLUS VMC
+                    </h4>
+                    <p>Versatile 4-axis machining center for multi-face operations and complex geometries.</p>
+                    <div class="equipment-specs">
+                        <div class="spec-item">
+                            <div class="spec-label">Control</div>
+                            <div class="spec-value">4-axis CNC</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Capability</div>
+                            <div class="spec-value">Multi-face</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="equipment-item">
-                    <h4>Quality Control Equipment</h4>
-                    <p>2D Measuring Instruments, Digital Head Height Masters, Slip Gauges, Bore Dials, Surface Plates</p>
+
+                <div class="equipment-card">
+                    <h4>
+                        <div class="equipment-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        Quality Control Lab
+                    </h4>
+                    <p>Comprehensive quality control equipment for dimensional verification and inspection.</p>
+                    <div class="equipment-specs">
+                        <div class="spec-item">
+                            <div class="spec-label">Instruments</div>
+                            <div class="spec-value">2D Measuring</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Standards</div>
+                            <div class="spec-value">ISO Certified</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="equipment-item">
-                    <h4>Designated Standard Room</h4>
-                    <p>Controlled environment for precision quality checks and measurements</p>
+
+                <div class="equipment-card">
+                    <h4>
+                        <div class="equipment-icon">
+                            <i class="fas fa-thermometer-half"></i>
+                        </div>
+                        Standard Room
+                    </h4>
+                    <p>Climate-controlled environment for precision quality checks and dimensional verification.</p>
+                    <div class="equipment-specs">
+                        <div class="spec-item">
+                            <div class="spec-label">Environment</div>
+                            <div class="spec-value">Controlled</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Purpose</div>
+                            <div class="spec-value">Precision QC</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="contact">
+    <section id="contact" class="contact section">
         <div class="container">
             <h2 class="section-title">Contact Us</h2>
+            <p class="section-subtitle">Ready to discuss your precision machining requirements</p>
+            
             <div class="contact-grid">
                 <div class="contact-info">
-                    <h3 style="margin-bottom: 2rem;">Get in Touch</h3>
+                    <h3>Get in Touch</h3>
                     <div class="contact-item">
                         <i class="fas fa-map-marker-alt"></i>
                         <div>
-                            <strong>Address</strong><br>
+                            <strong>Factory Address</strong><br>
                             Plot No.A-14, 1st Cross Street,<br>
                             Balaji Nagar, Ambattur,<br>
-                            Chennai - 600053
+                            Chennai - 600053, Tamil Nadu
                         </div>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-phone"></i>
                         <div>
                             <strong>Phone</strong><br>
-                            +91 9150400011
+                            +91 9150400011<br>
+                            <small style="color: var(--text-secondary);">Available: Mon-Sat, 9 AM - 6 PM</small>
                         </div>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-envelope"></i>
                         <div>
                             <strong>Email</strong><br>
-                            ei1995@gmail.com
+                            ei1995@gmail.com<br>
+                            <small style="color: var(--text-secondary);">24-hour response guaranteed</small>
                         </div>
                     </div>
                     <div class="contact-item">
-                        <i class="fas fa-user"></i>
+                        <i class="fas fa-user-tie"></i>
                         <div>
-                            <strong>Contact Person</strong><br>
-                            Uthayakumar
+                            <strong>Business Manager</strong><br>
+                            Mr. Uthayakumar<br>
+                            <small style="color: var(--text-secondary);">30+ years experience</small>
                         </div>
                     </div>
                 </div>
+                
                 <div class="contact-form">
-                    <h3 style="margin-bottom: 2rem;">Send us a Message</h3>
-                    <form>
-                        <div class="form-group">
-                            <input type="text" placeholder="Your Name" required>
+                    <h3>Send Message</h3>
+                    <form id="contactForm">
+                        <div class="form-grid">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Name *</label>
+                                    <input type="text" name="name" required placeholder="Your Name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Company</label>
+                                    <input type="text" name="company" placeholder="Company Name">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Email *</label>
+                                    <input type="email" name="email" required placeholder="your.email@company.com">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone</label>
+                                    <input type="tel" name="phone" placeholder="+91 XXXXX XXXXX">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Subject *</label>
+                                <select name="subject" required>
+                                    <option value="">Select Subject</option>
+                                    <option value="quote">Request Quote</option>
+                                    <option value="partnership">Partnership Inquiry</option>
+                                    <option value="technical">Technical Discussion</option>
+                                    <option value="quality">Quality Inquiry</option>
+                                    <option value="general">General Inquiry</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Message *</label>
+                                <textarea name="message" required placeholder="Tell us about your requirements..."></textarea>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <input type="email" placeholder="Your Email" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="tel" placeholder="Your Phone">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" placeholder="Subject" required>
-                        </div>
-                        <div class="form-group">
-                            <textarea placeholder="Your Message" required></textarea>
-                        </div>
-                        <button type="submit" class="submit-btn">Send Message</button>
+                        <button type="submit" class="btn-primary" style="width: 100%;">
+                            <span class="submit-text">Send Message</span>
+                            <span class="loading" style="display: none;"></span>
+                        </button>
                     </form>
                 </div>
             </div>
@@ -640,13 +1467,39 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 Engineers India. All rights reserved. | ISO Certified Precision Machining Solutions</p>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#home">Home</a>
+                <a href="#capabilities">Capabilities</a>
+                <a href="#customers">Customers</a>
+                <a href="#equipment">Equipment</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <p>&copy; 2025 Engineers India. All rights reserved. | ISO Certified Precision Machining Solutions | Tier 1 Supplier</p>
         </div>
     </footer>
 
     <script>
-        // Smooth scrolling for navigation links
+        // Modal Functions
+        function openQuoteModal() {
+            document.getElementById('quoteModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeQuoteModal() {
+            document.getElementById('quoteModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('quoteModal');
+            if (event.target == modal) {
+                closeQuoteModal();
+            }
+        }
+
+        // Smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -660,21 +1513,117 @@
             });
         });
 
-        // Form submission handler
-        document.querySelector('.contact-form form').addEventListener('submit', function(e) {
+        // Quote form submission
+        document.getElementById('quoteForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('Thank you for your message! We will get back to you soon.');
-            this.reset();
+            
+            const submitButton = this.querySelector('button[type="submit"]');
+            const submitText = submitButton.querySelector('.submit-text');
+            const loading = submitButton.querySelector('.loading');
+            
+            // Show loading state
+            submitText.style.display = 'none';
+            loading.style.display = 'inline-block';
+            submitButton.disabled = true;
+            
+            // Simulate form submission
+            setTimeout(() => {
+                alert('Quote request submitted successfully! We will contact you within 24 hours.');
+                closeQuoteModal();
+                this.reset();
+                
+                // Reset button state
+                submitText.style.display = 'inline';
+                loading.style.display = 'none';
+                submitButton.disabled = false;
+            }, 2000);
         });
 
-        // Add scroll effect to header
+        // Contact form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitButton = this.querySelector('button[type="submit"]');
+            const submitText = submitButton.querySelector('.submit-text');
+            const loading = submitButton.querySelector('.loading');
+            
+            // Show loading state
+            submitText.style.display = 'none';
+            loading.style.display = 'inline-block';
+            submitButton.disabled = true;
+            
+            // Simulate form submission
+            setTimeout(() => {
+                alert('Message sent successfully! We will get back to you soon.');
+                this.reset();
+                
+                // Reset button state
+                submitText.style.display = 'inline';
+                loading.style.display = 'none';
+                submitButton.disabled = false;
+            }, 2000);
+        });
+
+        // Header scroll effect
+        let lastScrollTop = 0;
         window.addEventListener('scroll', function() {
             const header = document.querySelector('.header');
-            if (window.scrollY > 100) {
-                header.style.background = 'rgba(30, 60, 114, 0.95)';
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > 100) {
+                header.style.background = 'rgba(10, 14, 39, 0.98)';
+                header.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.3)';
             } else {
-                header.style.background = 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)';
+                header.style.background = 'rgba(10, 14, 39, 0.95)';
+                header.style.boxShadow = 'none';
             }
+            
+            lastScrollTop = scrollTop;
+        });
+
+        // File upload handling
+        document.getElementById('drawings').addEventListener('change', function(e) {
+            const label = this.nextElementSibling;
+            const fileCount = this.files.length;
+            
+            if (fileCount > 0) {
+                label.innerHTML = `
+                    <i class="fas fa-check file-upload-icon" style="color: var(--success);"></i>
+                    <div>
+                        <strong>${fileCount} file(s) selected</strong>
+                        <br>
+                        <small>Files ready for upload</small>
+                    </div>
+                `;
+                label.style.borderColor = 'var(--success)';
+                label.style.background = 'rgba(0, 200, 150, 0.05)';
+            }
+        });
+
+        // Add intersection observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards for animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.capability-card, .customer-card, .equipment-card');
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'all 0.6s ease';
+                observer.observe(card);
+            });
         });
     </script>
 </body>
