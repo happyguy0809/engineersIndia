@@ -2003,10 +2003,7 @@
     </footer>
 
     <script>
-        // IMPORTANT: Update this URL after you deploy your backend
-        const API_BASE_URL = 'https://your-app-name.vercel.app'; // Change this to your deployed backend URL
-
-        // Modal Functions (keep existing)
+        // Modal Functions
         function openQuoteModal() {
             document.getElementById('quoteModal').style.display = 'block';
             document.body.style.overflow = 'hidden';
@@ -2017,7 +2014,7 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Close modal when clicking outside (keep existing)
+        // Close modal when clicking outside
         window.onclick = function (event) {
             const modal = document.getElementById('quoteModal');
             if (event.target == modal) {
@@ -2025,172 +2022,7 @@
             }
         }
 
-        // Helper function for notifications
-        function showNotification(message, type = 'success') {
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 15px 20px;
-        border-radius: 8px;
-        color: white;
-        font-weight: 500;
-        z-index: 10000;
-        max-width: 400px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        transition: all 0.3s ease;
-        ${type === 'success' ? 'background: #00C896;' : 'background: #FF6B35;'}
-    `;
-            notification.textContent = message;
-
-            document.body.appendChild(notification);
-
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                notification.style.transform = 'translateX(100%)';
-                setTimeout(() => {
-                    if (document.body.contains(notification)) {
-                        document.body.removeChild(notification);
-                    }
-                }, 300);
-            }, 5000);
-        }
-
-        // Updated Quote form submission with backend integration
-        document.getElementById('quoteForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
-
-            const submitButton = this.querySelector('button[type="submit"]');
-            const submitText = submitButton.querySelector('.submit-text');
-            const loading = submitButton.querySelector('.loading');
-
-            // Show loading state
-            submitText.style.display = 'none';
-            loading.style.display = 'inline-block';
-            submitButton.disabled = true;
-
-            try {
-                // Create FormData to handle file uploads
-                const formData = new FormData();
-
-                // Add all form fields to FormData
-                const formElements = this.elements;
-                for (let i = 0; i < formElements.length; i++) {
-                    const element = formElements[i];
-
-                    if (element.type === 'file') {
-                        // Handle file uploads
-                        for (let j = 0; j < element.files.length; j++) {
-                            formData.append('drawings', element.files[j]);
-                        }
-                    } else if (element.name && element.value) {
-                        formData.append(element.name, element.value);
-                    }
-                }
-
-                // Send request to backend
-                const response = await fetch(`${API_BASE_URL}/submit-quote`, {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    showNotification(result.message, 'success');
-                    closeQuoteModal();
-                    this.reset();
-
-                    // Reset file upload display
-                    const fileUploadLabel = document.querySelector('.file-upload-label');
-                    fileUploadLabel.innerHTML = `
-                <i class="fas fa-cloud-upload-alt file-upload-icon"></i>
-                <div>
-                    <strong>Click to upload files</strong>
-                    <br>
-                    <small>PDF, DWG, STEP, IGES formats accepted</small>
-                </div>
-            `;
-                    fileUploadLabel.style.borderColor = 'var(--glass-border)';
-                    fileUploadLabel.style.background = 'var(--glass)';
-                } else {
-                    showNotification(result.message || 'Failed to submit quote request. Please try again.', 'error');
-                }
-
-            } catch (error) {
-                console.error('Quote submission error:', error);
-                showNotification('Network error. Please check your connection and try again, or call +91 9150400011', 'error');
-            } finally {
-                // Reset button state
-                submitText.style.display = 'inline';
-                loading.style.display = 'none';
-                submitButton.disabled = false;
-            }
-        });
-
-        // Updated Contact form submission with backend integration
-        document.getElementById('contactForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
-
-            const submitButton = this.querySelector('button[type="submit"]');
-            const submitText = submitButton.querySelector('.submit-text');
-            const loading = submitButton.querySelector('.loading');
-
-            // Show loading state
-            submitText.style.display = 'none';
-            loading.style.display = 'inline-block';
-            submitButton.disabled = true;
-
-            try {
-                // Collect form data
-                const formData = {
-                    name: this.name.value,
-                    company: this.company.value,
-                    email: this.email.value,
-                    phone: this.phone.value,
-                    subject: this.subject.value,
-                    message: this.message.value
-                };
-
-                // Send request to backend
-                const response = await fetch(`${API_BASE_URL}/submit-contact`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    showNotification(result.message, 'success');
-                    this.reset();
-                } else {
-                    showNotification(result.message || 'Failed to send message. Please try again.', 'error');
-                }
-
-            } catch (error) {
-                console.error('Contact submission error:', error);
-                showNotification('Network error. Please call +91 9150400011 directly.', 'error');
-            } finally {
-                // Reset button state
-                submitText.style.display = 'inline';
-                loading.style.display = 'none';
-                submitButton.disabled = false;
-            }
-        });
-
-        // Keep all your existing code below this line:
-        // - Smooth scrolling
-        // - File upload handling  
-        // - Header scroll effect
-        // - Intersection observer
-        // - Equipment card flip functions
-        // etc.
-
-        // Smooth scrolling (keep existing)
+        // Smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -2204,26 +2036,58 @@
             });
         });
 
-        // File upload handling (keep existing but updated)
-        document.getElementById('drawings').addEventListener('change', function (e) {
-            const label = this.nextElementSibling;
-            const fileCount = this.files.length;
+        // Quote form submission
+        document.getElementById('quoteForm').addEventListener('submit', function (e) {
+            e.preventDefault();
 
-            if (fileCount > 0) {
-                label.innerHTML = `
-            <i class="fas fa-check file-upload-icon" style="color: var(--success);"></i>
-            <div>
-                <strong>${fileCount} file(s) selected</strong>
-                <br>
-                <small>Files ready for upload</small>
-            </div>
-        `;
-                label.style.borderColor = 'var(--success)';
-                label.style.background = 'rgba(0, 200, 150, 0.05)';
-            }
+            const submitButton = this.querySelector('button[type="submit"]');
+            const submitText = submitButton.querySelector('.submit-text');
+            const loading = submitButton.querySelector('.loading');
+
+            // Show loading state
+            submitText.style.display = 'none';
+            loading.style.display = 'inline-block';
+            submitButton.disabled = true;
+
+            // Simulate form submission
+            setTimeout(() => {
+                alert('Quote request submitted successfully! We will contact you within 24 hours.');
+                closeQuoteModal();
+                this.reset();
+
+                // Reset button state
+                submitText.style.display = 'inline';
+                loading.style.display = 'none';
+                submitButton.disabled = false;
+            }, 2000);
         });
 
-        // Header scroll effect (keep existing)
+        // Contact form submission
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const submitButton = this.querySelector('button[type="submit"]');
+            const submitText = submitButton.querySelector('.submit-text');
+            const loading = submitButton.querySelector('.loading');
+
+            // Show loading state
+            submitText.style.display = 'none';
+            loading.style.display = 'inline-block';
+            submitButton.disabled = true;
+
+            // Simulate form submission
+            setTimeout(() => {
+                alert('Message sent successfully! We will get back to you soon.');
+                this.reset();
+
+                // Reset button state
+                submitText.style.display = 'inline';
+                loading.style.display = 'none';
+                submitButton.disabled = false;
+            }, 2000);
+        });
+
+        // Header scroll effect
         let lastScrollTop = 0;
         window.addEventListener('scroll', function () {
             const header = document.querySelector('.header');
@@ -2240,7 +2104,26 @@
             lastScrollTop = scrollTop;
         });
 
-        // Add intersection observer for animations (keep existing)
+        // File upload handling
+        document.getElementById('drawings').addEventListener('change', function (e) {
+            const label = this.nextElementSibling;
+            const fileCount = this.files.length;
+
+            if (fileCount > 0) {
+                label.innerHTML = `
+                    <i class="fas fa-check file-upload-icon" style="color: var(--success);"></i>
+                    <div>
+                        <strong>${fileCount} file(s) selected</strong>
+                        <br>
+                        <small>Files ready for upload</small>
+                    </div>
+                `;
+                label.style.borderColor = 'var(--success)';
+                label.style.background = 'rgba(0, 200, 150, 0.05)';
+            }
+        });
+
+        // Add intersection observer for animations
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -2255,7 +2138,7 @@
             });
         }, observerOptions);
 
-        // Observe all cards for animation (keep existing)
+        // Observe all cards for animation
         document.addEventListener('DOMContentLoaded', function () {
             const cards = document.querySelectorAll('.capability-card, .customer-card, .equipment-card');
             cards.forEach(card => {
@@ -2266,11 +2149,13 @@
             });
         });
 
-        // Function to handle mobile flip toggle (keep existing)
+        // Function to handle mobile flip toggle
         function toggleFlip(card) {
+            // Only add flip class on mobile devices
             if (window.innerWidth <= 767) {
                 card.classList.toggle('flipped');
 
+                // Remove flip class from other cards
                 const allCards = document.querySelectorAll('.equipment-card');
                 allCards.forEach(otherCard => {
                     if (otherCard !== card && otherCard.classList.contains('flipped')) {
@@ -2280,7 +2165,7 @@
             }
         }
 
-        // Remove flip classes on window resize to desktop (keep existing)
+        // Remove flip classes on window resize to desktop
         window.addEventListener('resize', function () {
             if (window.innerWidth > 767) {
                 const flippedCards = document.querySelectorAll('.equipment-card.flipped');

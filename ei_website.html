@@ -13,7 +13,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
             color: #333;
             overflow-x: hidden;
@@ -21,14 +21,15 @@
 
         /* Header */
         .header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: linear-gradient(135deg, #1a237e 0%, #3949ab 100%);
             color: white;
             padding: 1rem 0;
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
         }
 
         .nav-container {
@@ -48,8 +49,14 @@
         }
 
         .logo i {
-            margin-right: 0.5rem;
-            color: #ffd700;
+            margin-right: 0.75rem;
+            color: #ffc107;
+            animation: rotate 6s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .nav-menu {
@@ -64,18 +71,21 @@
         .nav-menu a {
             color: white;
             text-decoration: none;
-            transition: color 0.3s;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
         .nav-menu a:hover {
-            color: #ffd700;
+            color: #ffc107;
         }
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, rgba(30,60,114,0.9), rgba(42,82,152,0.9)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23f0f0f0" width="1200" height="600"/><g fill="%23ddd"><circle cx="200" cy="150" r="50"/><circle cx="600" cy="300" r="80"/><circle cx="1000" cy="200" r="60"/></g></svg>');
+            background: linear-gradient(135deg, rgba(26,35,126,0.9), rgba(57,73,171,0.9)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23f8f9fa" width="1200" height="800"/><g fill="%23e9ecef"><circle cx="100" cy="200" r="20"/><circle cx="300" cy="400" r="30"/><circle cx="800" cy="150" r="25"/><circle cx="1000" cy="350" r="35"/></g></svg>');
             background-size: cover;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             text-align: center;
@@ -84,7 +94,7 @@
         }
 
         .hero-content {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 0 2rem;
         }
@@ -92,37 +102,71 @@
         .hero h1 {
             font-size: 3.5rem;
             margin-bottom: 1rem;
-            animation: fadeInUp 1s ease;
+            font-weight: 700;
+            animation: slideInUp 1s ease;
         }
 
-        .hero p {
+        .hero-subtitle {
             font-size: 1.3rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-            animation: fadeInUp 1s ease 0.2s both;
+            margin-bottom: 1rem;
+            opacity: 0.95;
+            animation: slideInUp 1s ease 0.2s both;
         }
 
-        .cta-button {
-            display: inline-block;
-            background: #ffd700;
-            color: #1e3c72;
+        .hero-description {
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: slideInUp 1s ease 0.4s both;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: slideInUp 1s ease 0.6s both;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #ffc107, #ff9800);
+            color: #1a237e;
             padding: 15px 30px;
             text-decoration: none;
             border-radius: 50px;
-            font-weight: bold;
-            transition: transform 0.3s, box-shadow 0.3s;
-            animation: fadeInUp 1s ease 0.4s both;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255,193,7,0.3);
         }
 
-        .cta-button:hover {
+        .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(255,215,0,0.3);
+            box-shadow: 0 8px 25px rgba(255,193,7,0.4);
         }
 
-        /* About Section */
-        .about {
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            border: 2px solid rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-3px);
+        }
+
+        /* Section Styling */
+        .section {
             padding: 100px 0;
-            background: #f8f9fa;
         }
 
         .container {
@@ -134,8 +178,9 @@
         .section-title {
             text-align: center;
             font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: #1e3c72;
+            margin-bottom: 1rem;
+            color: #1a237e;
+            font-weight: 700;
             position: relative;
         }
 
@@ -145,16 +190,33 @@
             bottom: -10px;
             left: 50%;
             transform: translateX(-50%);
-            width: 50px;
-            height: 3px;
-            background: #ffd700;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(45deg, #ffc107, #ff9800);
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* About Section */
+        .about {
+            background: #f8f9fa;
         }
 
         .about-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 3rem;
+            grid-template-columns: 2fr 1fr;
+            gap: 4rem;
             align-items: center;
+            margin-bottom: 4rem;
         }
 
         .about-text {
@@ -162,137 +224,216 @@
             line-height: 1.8;
         }
 
-        .highlight-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+        .about-text p {
+            margin-bottom: 1.5rem;
         }
 
-        .stat-item {
-            text-align: center;
-            padding: 1.5rem;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .stat-card {
             background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            border-top: 4px solid #ffc107;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
         }
 
         .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #1e3c72;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #1a237e;
+            display: block;
+            margin-bottom: 0.5rem;
         }
 
         .stat-label {
             color: #666;
-            margin-top: 0.5rem;
+            font-weight: 500;
         }
 
         /* Services Section */
         .services {
-            padding: 100px 0;
             background: white;
         }
 
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem;
-            margin-top: 3rem;
         }
 
         .service-card {
-            background: #f8f9fa;
-            padding: 2rem;
-            border-radius: 15px;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
             text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid #e9ecef;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f0;
+            position: relative;
+            overflow: hidden;
         }
 
         .service-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 20px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 40px rgba(26,35,126,0.15);
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #ffc107, #ff9800);
+            transition: left 0.3s ease;
+        }
+
+        .service-card:hover::before {
+            left: 0;
         }
 
         .service-icon {
             font-size: 3rem;
-            color: #1e3c72;
-            margin-bottom: 1rem;
+            color: #1a237e;
+            margin-bottom: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .service-card:hover .service-icon {
+            color: #ffc107;
         }
 
         .service-card h3 {
-            color: #1e3c72;
+            color: #1a237e;
             margin-bottom: 1rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .service-card p {
+            color: #666;
+            line-height: 1.6;
         }
 
         /* Customers Section */
         .customers {
-            padding: 100px 0;
-            background: #1e3c72;
+            background: #1a237e;
             color: white;
-            text-align: center;
+        }
+
+        .customers .section-title {
+            color: white;
+        }
+
+        .customers .section-subtitle {
+            color: rgba(255,255,255,0.8);
         }
 
         .customers-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
         }
 
         .customer-card {
             background: rgba(255,255,255,0.1);
-            padding: 2rem 1rem;
-            border-radius: 10px;
+            padding: 2rem 1.5rem;
+            border-radius: 15px;
+            text-align: center;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: transform 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
         }
 
         .customer-card:hover {
             transform: scale(1.05);
+            background: rgba(255,255,255,0.15);
+        }
+
+        .customer-logo {
+            background: rgba(255,255,255,0.9);
+            color: #1a237e;
+            padding: 0.8rem;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* Equipment Section */
         .equipment {
-            padding: 100px 0;
             background: #f8f9fa;
         }
 
-        .equipment-list {
+        .equipment-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
         }
 
-        .equipment-item {
+        .equipment-card {
             background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border-left: 4px solid #1e3c72;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border-left: 5px solid #1a237e;
+            transition: all 0.3s ease;
+        }
+
+        .equipment-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .equipment-card h4 {
+            color: #1a237e;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .equipment-card p {
+            color: #666;
+            line-height: 1.6;
         }
 
         /* Contact Section */
         .contact {
-            padding: 100px 0;
             background: white;
         }
 
         .contact-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: 1fr 1fr;
             gap: 3rem;
-            margin-top: 3rem;
         }
 
         .contact-info {
-            background: #1e3c72;
+            background: linear-gradient(135deg, #1a237e, #3949ab);
             color: white;
             padding: 3rem;
-            border-radius: 15px;
+            border-radius: 20px;
+        }
+
+        .contact-info h3 {
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
         }
 
         .contact-item {
@@ -304,13 +445,19 @@
         .contact-item i {
             font-size: 1.5rem;
             margin-right: 1rem;
-            color: #ffd700;
+            color: #ffc107;
         }
 
         .contact-form {
             background: #f8f9fa;
             padding: 3rem;
-            border-radius: 15px;
+            border-radius: 20px;
+        }
+
+        .contact-form h3 {
+            margin-bottom: 2rem;
+            color: #1a237e;
+            font-size: 1.8rem;
         }
 
         .form-group {
@@ -320,10 +467,17 @@
         .form-group input,
         .form-group textarea {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
             font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #1a237e;
         }
 
         .form-group textarea {
@@ -332,18 +486,20 @@
         }
 
         .submit-btn {
-            background: #1e3c72;
+            background: linear-gradient(45deg, #1a237e, #3949ab);
             color: white;
-            padding: 12px 30px;
+            padding: 15px 30px;
             border: none;
-            border-radius: 5px;
+            border-radius: 50px;
             cursor: pointer;
             font-size: 1rem;
-            transition: background 0.3s;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
 
         .submit-btn:hover {
-            background: #2a5298;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26,35,126,0.3);
         }
 
         /* Footer */
@@ -355,7 +511,7 @@
         }
 
         /* Animations */
-        @keyframes fadeInUp {
+        @keyframes slideInUp {
             from {
                 opacity: 0;
                 transform: translateY(30px);
@@ -376,12 +532,26 @@
                 font-size: 2.5rem;
             }
 
-            .hero p {
-                font-size: 1.1rem;
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
             }
 
-            .section-title {
-                font-size: 2rem;
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .customers-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
@@ -411,34 +581,41 @@
     <section id="home" class="hero">
         <div class="hero-content">
             <h1>Precision Machining Excellence</h1>
-            <p>ISO certified organization with over 30 years of trusted service in the machining industry</p>
-            <a href="#contact" class="cta-button">Get Quote Today</a>
+            <p class="hero-subtitle">Delivering Innovation & Quality Since 1990</p>
+            <p class="hero-description">ISO certified organization with over 30 years of trusted service in the machining industry, serving leading companies across automotive, railway, and industrial sectors.</p>
+            <div class="cta-buttons">
+                <a href="#contact" class="btn-primary">Get Quote Today</a>
+                <a href="#about" class="btn-secondary">Learn More</a>
+            </div>
         </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="about">
+    <section id="about" class="about section">
         <div class="container">
             <h2 class="section-title">About Engineers India</h2>
+            <p class="section-subtitle">Three decades of engineering excellence and precision manufacturing</p>
+            
             <div class="about-grid">
                 <div class="about-text">
-                    <p>Established in the early 1990s, Engineers India is an ISO certified organization with experienced and respected promoters. As a trusted name for over thirty years, we continue to deliver excellence and innovation in the machining industry.</p>
+                    <p><strong>Established in the early 1990s</strong>, Engineers India is an ISO certified organization with experienced and respected promoters. As a trusted name for over thirty years, we continue to deliver excellence and innovation in the machining industry.</p>
                     
-                    <p>Serving industries such as railways, automotive, valves and pumps, tractors, earthmoving parts, air circuit breakers and agriculture, we are a reliable supplier committed to quality through our state-of-the-art facilities and cutting-edge technologies, ensuring precision components.</p>
+                    <p>Serving industries such as <strong>railways, automotive, valves and pumps, tractors, earthmoving parts, air circuit breakers and agriculture</strong>, we are a reliable supplier committed to quality through our state-of-the-art facilities and cutting-edge technologies.</p>
                     
-                    <p>We have proudly served as Tier one supplier to many huge organizations and manufacturers, building lasting partnerships based on quality, reliability, and innovation.</p>
+                    <p>We have proudly served as <strong>Tier one supplier</strong> to many huge organizations and manufacturers, building lasting partnerships based on quality, reliability, and innovation.</p>
                 </div>
-                <div class="highlight-stats">
-                    <div class="stat-item">
-                        <div class="stat-number">30+</div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number">30+</span>
                         <div class="stat-label">Years Experience</div>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-number">ISO</div>
+                    <div class="stat-card">
+                        <span class="stat-number">ISO</span>
                         <div class="stat-label">Certified</div>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-number">Tier 1</div>
+                    <div class="stat-card">
+                        <span class="stat-number">Tier 1</span>
                         <div class="stat-label">Supplier</div>
                     </div>
                 </div>
@@ -447,95 +624,116 @@
     </section>
 
     <!-- Services Section -->
-    <section id="services" class="services">
+    <section id="services" class="services section">
         <div class="container">
             <h2 class="section-title">Our Product Portfolio</h2>
+            <p class="section-subtitle">Comprehensive machining solutions across multiple industries</p>
+            
             <div class="services-grid">
                 <div class="service-card">
                     <div class="service-icon">
                         <i class="fas fa-car"></i>
                     </div>
                     <h3>Automotive Components</h3>
-                    <p>Oil Pumps and Water Pumps for automobile engines, Torque Plates for Brakes, Gear Box End covers, and various engine components</p>
+                    <p>Oil Pumps and Water Pumps for automobile engines, Torque Plates for Brakes, Gear Box End covers, and various precision engine components.</p>
                 </div>
+                
                 <div class="service-card">
                     <div class="service-icon">
                         <i class="fas fa-tractor"></i>
                     </div>
                     <h3>Tractor & Engine Parts</h3>
-                    <p>Timing Cover variations for Diesel and Petrol engines, Chain cases (Inner & Outer), Cylinder Head covers, and Link Support variations</p>
+                    <p>Timing Cover variations for Diesel and Petrol engines, Chain cases (Inner & Outer), Cylinder Head covers, and Link Support variations.</p>
                 </div>
+                
                 <div class="service-card">
                     <div class="service-icon">
                         <i class="fas fa-train"></i>
                     </div>
                     <h3>Railway Components</h3>
-                    <p>Specialized machining for railway industry applications with precision engineering and quality assurance</p>
+                    <p>Specialized precision machining for railway industry applications with stringent quality standards and reliability.</p>
                 </div>
+                
                 <div class="service-card">
                     <div class="service-icon">
                         <i class="fas fa-bolt"></i>
                     </div>
                     <h3>Electrical Components</h3>
-                    <p>Air Circuit Breaker Components for GEC Alstom and other electrical applications with precise specifications</p>
+                    <p>Air Circuit Breaker Components for GEC Alstom and other electrical applications with precise specifications.</p>
                 </div>
+                
                 <div class="service-card">
                     <div class="service-icon">
                         <i class="fas fa-tools"></i>
                     </div>
                     <h3>Industrial Parts</h3>
-                    <p>Inlet & Exhaust Manifold variations, Hydraulic support components, Wall covers, and S-manifold systems</p>
+                    <p>Inlet & Exhaust Manifold variations, Hydraulic support components, Wall covers, and S-manifold systems.</p>
                 </div>
+                
                 <div class="service-card">
                     <div class="service-icon">
                         <i class="fas fa-seedling"></i>
                     </div>
                     <h3>Agriculture Equipment</h3>
-                    <p>Precision machined components for agricultural machinery and equipment with durability focus</p>
+                    <p>Precision machined components for agricultural machinery and equipment with focus on durability.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Customers Section -->
-    <section id="customers" class="customers">
+    <section id="customers" class="customers section">
         <div class="container">
-            <h2 class="section-title" style="color: white;">Our Valued Customers</h2>
+            <h2 class="section-title">Our Valued Customers</h2>
+            <p class="section-subtitle">Trusted by industry leaders across multiple sectors</p>
+            
             <div class="customers-grid">
                 <div class="customer-card">
+                    <div class="customer-logo">GEC ALSTHOM</div>
                     <h4>GEC Alsthom</h4>
                 </div>
                 <div class="customer-card">
+                    <div class="customer-logo">ASHOK LEYLAND</div>
                     <h4>Ashok Leyland</h4>
                 </div>
                 <div class="customer-card">
+                    <div class="customer-logo">ROYAL ENFIELD</div>
                     <h4>Royal Enfield</h4>
                 </div>
                 <div class="customer-card">
+                    <div class="customer-logo">AUTOLEC</div>
                     <h4>Autolec (SFL Pump)</h4>
                 </div>
                 <div class="customer-card">
+                    <div class="customer-logo">SAME DEUSTCHE</div>
                     <h4>Same Deustche</h4>
                 </div>
                 <div class="customer-card">
+                    <div class="customer-logo">BRAKES INDIA</div>
                     <h4>Brakes India</h4>
                 </div>
                 <div class="customer-card">
-                    <h4>Heavy Vehicles Factory (Avadi)</h4>
+                    <div class="customer-logo">HVF AVADI</div>
+                    <h4>Heavy Vehicles Factory</h4>
                 </div>
                 <div class="customer-card">
+                    <div class="customer-logo">SEYOON TECH</div>
                     <h4>Seyoon Tech</h4>
                 </div>
                 <div class="customer-card">
+                    <div class="customer-logo">BERKEL ENG</div>
                     <h4>Berkel Engineering</h4>
                 </div>
                 <div class="customer-card">
+                    <div class="customer-logo">RANE POWER</div>
                     <h4>Rane Power Steering</h4>
                 </div>
                 <div class="customer-card">
+                    <div class="customer-logo">SANMAR IND</div>
                     <h4>Sanmar Industries</h4>
                 </div>
                 <div class="customer-card">
+                    <div class="customer-logo">SIBAR AUTO</div>
                     <h4>Sibar Autoparts</h4>
                 </div>
             </div>
@@ -543,45 +741,49 @@
     </section>
 
     <!-- Equipment Section -->
-    <section id="equipment" class="equipment">
+    <section id="equipment" class="equipment section">
         <div class="container">
             <h2 class="section-title">Advanced Equipment & Quality Control</h2>
-            <div class="equipment-list">
-                <div class="equipment-item">
+            <p class="section-subtitle">State-of-the-art machinery ensuring precision and quality</p>
+            
+            <div class="equipment-grid">
+                <div class="equipment-card">
                     <h4>BFW BMV40 TC20 Vertical Machining Centre</h4>
-                    <p>4-axis and 3-axis control capabilities</p>
+                    <p>4-axis and 3-axis control capabilities for complex precision operations</p>
                 </div>
-                <div class="equipment-item">
+                <div class="equipment-card">
                     <h4>YANG EAGLE 600 Vertical Machining Centre</h4>
-                    <p>3-axis control precision machining</p>
+                    <p>3-axis control precision machining with superior finish quality</p>
                 </div>
-                <div class="equipment-item">
+                <div class="equipment-card">
                     <h4>WHACHEON CNC Lathe</h4>
-                    <p>2 Spindle (300mm chuck) configuration</p>
+                    <p>2 Spindle (300mm chuck) configuration for high-volume production</p>
                 </div>
-                <div class="equipment-item">
+                <div class="equipment-card">
                     <h4>TATA V500 PLUS Vertical Machining Center</h4>
-                    <p>4-axis control for complex operations</p>
+                    <p>4-axis control for complex operations and multi-face machining</p>
                 </div>
-                <div class="equipment-item">
+                <div class="equipment-card">
                     <h4>Quality Control Equipment</h4>
-                    <p>2D Measuring Instruments, Digital Head Height Masters, Slip Gauges, Bore Dials, Surface Plates</p>
+                    <p>2D Measuring Instruments, Digital Head Height Masters, Slip Gauges, Bore Dials, and Surface Plates</p>
                 </div>
-                <div class="equipment-item">
+                <div class="equipment-card">
                     <h4>Designated Standard Room</h4>
-                    <p>Controlled environment for precision quality checks and measurements</p>
+                    <p>Controlled environment for precision quality checks and dimensional verification</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="contact">
+    <section id="contact" class="contact section">
         <div class="container">
             <h2 class="section-title">Contact Us</h2>
+            <p class="section-subtitle">Get in touch for your precision machining requirements</p>
+            
             <div class="contact-grid">
                 <div class="contact-info">
-                    <h3 style="margin-bottom: 2rem;">Get in Touch</h3>
+                    <h3>Get in Touch</h3>
                     <div class="contact-item">
                         <i class="fas fa-map-marker-alt"></i>
                         <div>
@@ -609,12 +811,13 @@
                         <i class="fas fa-user"></i>
                         <div>
                             <strong>Contact Person</strong><br>
-                            Uthayakumar
+                            Mr. Uthayakumar
                         </div>
                     </div>
                 </div>
+                
                 <div class="contact-form">
-                    <h3 style="margin-bottom: 2rem;">Send us a Message</h3>
+                    <h3>Send us a Message</h3>
                     <form>
                         <div class="form-group">
                             <input type="text" placeholder="Your Name" required>
@@ -646,34 +849,30 @@
     </footer>
 
     <script>
-        // Smooth scrolling for navigation links
+        // Smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
             });
         });
 
-        // Form submission handler
+        // Form submission
         document.querySelector('.contact-form form').addEventListener('submit', function(e) {
             e.preventDefault();
             alert('Thank you for your message! We will get back to you soon.');
             this.reset();
         });
 
-        // Add scroll effect to header
+        // Header scroll effect
         window.addEventListener('scroll', function() {
             const header = document.querySelector('.header');
             if (window.scrollY > 100) {
-                header.style.background = 'rgba(30, 60, 114, 0.95)';
+                header.style.background = 'rgba(26, 35, 126, 0.95)';
             } else {
-                header.style.background = 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)';
+                header.style.background = 'linear-gradient(135deg, #1a237e 0%, #3949ab 100%)';
             }
         });
     </script>
