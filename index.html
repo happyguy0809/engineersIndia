@@ -2090,7 +2090,7 @@
                 }
 
                 // Send request to backend
-                const response = await fetch(`${API_BASE_URL}/submit-quote`, {
+                const response = await fetch('https://submitquote-v6jj46hxeq-uc.a.run.app', {
                     method: 'POST',
                     body: formData
                 });
@@ -2154,7 +2154,7 @@
                 };
 
                 // Send request to backend
-                const response = await fetch(`${API_BASE_URL}/submit-contact`, {
+                const response = await fetch('https://submitcontact-v6jj46hxeq-uc.a.run.app', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
