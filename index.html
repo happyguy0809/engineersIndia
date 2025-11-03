@@ -1176,24 +1176,592 @@
             border-top-color: var(--primary);
             animation: spin 1s ease-in-out infinite;
         }
+
+        /* ========================================
+   ENHANCED PRODUCTS SECTION WITH DETAILED MODAL
+   Complete Code Implementation
+   ======================================== */
+
+        /* ==========================================
+   PART 1: ADD THIS CSS TO YOUR STYLE SECTION
+   ========================================== */
+
+        /* Products Section Styles */
+        .products {
+            background: var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .products::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 80% 20%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%);
+            z-index: 1;
+        }
+
+        .products .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .product-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px rgba(0, 212, 255, 0.15);
+            border-color: var(--accent);
+        }
+
+        .product-image-container {
+            position: relative;
+            width: 100%;
+            height: 320px;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--surface), var(--surface-light));
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.1);
+        }
+
+        .product-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg,
+                    rgba(10, 14, 39, 0.85) 0%,
+                    rgba(26, 31, 58, 0.85) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            padding: 2rem;
+        }
+
+        .product-card:hover .product-overlay {
+            opacity: 1;
+        }
+
+        .overlay-content {
+            text-align: center;
+        }
+
+        .overlay-content h4 {
+            color: var(--accent);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .overlay-content p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-view-details {
+            background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+            color: var(--primary);
+            border: none;
+            padding: 14px 32px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-view-details:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        .product-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .product-info h3 {
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-info p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            z-index: 3;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Product Detail Modal Styles */
+        .product-detail-modal {
+            display: none;
+            position: fixed;
+            z-index: 3000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            overflow-y: auto;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .product-detail-content {
+            background: var(--surface);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            margin: 3% auto;
+            padding: 0;
+            width: 90%;
+            max-width: 1200px;
+            animation: slideInUp 0.4s ease;
+            position: relative;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .product-detail-header {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            padding: 2rem;
+            border-radius: 25px 25px 0 0;
+            border-bottom: 2px solid var(--accent);
+            position: relative;
+        }
+
+        .product-detail-close {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            color: var(--text-primary);
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .product-detail-close:hover {
+            background: var(--accent);
+            color: var(--primary);
+            transform: rotate(90deg);
+        }
+
+        .product-detail-header h2 {
+            color: var(--text-primary);
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-detail-header .category-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+            color: var(--primary);
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .product-detail-body {
+            padding: 2rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .product-detail-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .product-detail-body::-webkit-scrollbar-track {
+            background: var(--surface);
+            border-radius: 4px;
+        }
+
+        .product-detail-body::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--accent), var(--accent-warm));
+            border-radius: 4px;
+        }
+
+        .product-intro {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .product-intro p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        .parts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .part-item {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .part-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 212, 255, 0.1);
+            border-color: var(--accent);
+        }
+
+        .part-image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            background: var(--surface-light);
+        }
+
+        .part-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            transition: transform 0.5s ease;
+        }
+
+        .part-item:hover .part-image {
+            transform: scale(1.1);
+        }
+
+        .part-details {
+            padding: 0.75rem;
+        }
+
+        .part-details h4 {
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .part-details h4 i {
+            color: var(--accent);
+            font-size: 1rem;
+        }
+
+        .part-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .part-specs {
+            background: rgba(0, 212, 255, 0.05);
+            border-left: 3px solid var(--success);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .part-specs h5 {
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+
+        .part-specs ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .part-specs li {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .part-specs li i {
+            color: var(--success);
+            font-size: 0.7rem;
+            margin-top: 0.25rem;
+            min-width: 12px;
+        }
+
+        .capability-highlight {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 107, 53, 0.1));
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .capability-highlight i {
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+
+        .capability-highlight span {
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .product-detail-footer {
+            background: var(--primary-light);
+            padding: 1.5rem 2rem;
+            border-radius: 0 0 25px 25px;
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-info {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .footer-info i {
+            color: var(--accent);
+            margin-right: 0.5rem;
+        }
+
+        .btn-request-quote {
+            background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+            color: var(--primary);
+            border: none;
+            padding: 14px 32px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-request-quote:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .parts-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .product-image-container {
+                height: 250px;
+            }
+
+            .product-detail-content {
+                width: 95%;
+                margin: 5% auto;
+            }
+
+            .product-detail-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .parts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .product-detail-footer {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .btn-request-quote {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Animation for products on scroll */
+        .product-card {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .product-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .product-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .product-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .product-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .product-card:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .product-card:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 
 <body>
-    <!-- Header -->
     <header class="header">
         <div class="nav-container">
             <div class="logo">
-                <img src="images/siteLogo.png" class="logo-img">
+                <img src="images/siteLogo.png" class="logo-img" alt="Engineers India Logo">
             </div>
+
+            <!-- Mobile Menu Toggle -->
+            <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
             <nav>
-                <ul class="nav-menu">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#capabilities">Capabilities</a></li>
-                    <li><a href="#customers">Customers</a></li>
-                    <li><a href="#equipment">Equipment</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                    <li><a href="#" class="quick-quote-btn" onclick="openQuoteModal()">Quick Quote</a></li>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="#home" onclick="closeMobileMenu()">Home</a></li>
+                    <li><a href="#capabilities" onclick="closeMobileMenu()">Capabilities</a></li>
+                    <li><a href="#products" onclick="closeMobileMenu()">Products</a></li>
+                    <li><a href="#customers" onclick="closeMobileMenu()">Customers</a></li>
+                    <li><a href="#equipment" onclick="closeMobileMenu()">Equipment</a></li>
+                    <li><a href="#contact" onclick="closeMobileMenu()">Contact</a></li>
+                    <li><a href="#" class="quick-quote-btn" onclick="openQuoteModal(); closeMobileMenu()">Quick
+                            Quote</a></li>
                 </ul>
             </nav>
         </div>
@@ -1215,7 +1783,7 @@
                         <span class="stat-label">Years</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number">500+</span>
+                        <span class="stat-number">30+</span>
                         <span class="stat-label">Components</span>
                     </div>
                     <div class="stat-item">
@@ -1623,6 +2191,1118 @@
             }
         }
     </style>
+
+    <!-- ============================================
+     PRODUCTS SECTION
+     ============================================ -->
+
+    <!-- Products Section -->
+    <section id="products" class="products section">
+        <div class="container">
+            <h2 class="section-title">Our Products</h2>
+            <p class="section-subtitle">Precision-engineered components previously worked on for automotive, industrial,
+                and railway applications</p>
+
+            <div class="products-grid">
+                <!-- Product Card 1: Engine Components -->
+                <div class="product-card" onclick="openProductDetail('engine')">
+                    <div class="product-image-container">
+                        <div class="product-badge">Automotive</div>
+                        <img src="images/products/engine-components.png" alt="Engine Components" class="product-image">
+                        <div class="product-overlay">
+                            <div class="overlay-content">
+                                <h4>Engine Components</h4>
+                                <p>Explore our comprehensive range of precision-machined engine parts</p>
+                                <button class="btn-view-details">
+                                    <i class="fas fa-eye"></i>
+                                    View All Parts
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Engine Components</h3>
+                        <p>11 Specialized Parts</p>
+                    </div>
+                </div>
+
+                <!-- Product Card 2: Transmission Parts -->
+                <div class="product-card" onclick="openProductDetail('transmission')">
+                    <div class="product-image-container">
+                        <div class="product-badge">Automotive</div>
+                        <img src="images/products/transmission-parts.jpeg" alt="Transmission Parts"
+                            class="product-image">
+                        <div class="product-overlay">
+                            <div class="overlay-content">
+                                <h4>Transmission Components</h4>
+                                <p>Discover our robust transmission and gearbox solutions</p>
+                                <button class="btn-view-details">
+                                    <i class="fas fa-eye"></i>
+                                    View All Parts
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Transmission Parts</h3>
+                        <p>3 Component Types</p>
+                    </div>
+                </div>
+
+                <!-- Product Card 3: Pump Components -->
+                <div class="product-card" onclick="openProductDetail('pumps')">
+                    <div class="product-image-container">
+                        <div class="product-badge">Industrial</div>
+                        <img src="images/products/pump-components.jpg" alt="Pump Components" class="product-image">
+                        <div class="product-overlay">
+                            <div class="overlay-content">
+                                <h4>Pump Assemblies</h4>
+                                <p>View our precision pump housings and assemblies</p>
+                                <button class="btn-view-details">
+                                    <i class="fas fa-eye"></i>
+                                    View All Parts
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Pump Components</h3>
+                        <p>3 Assembly Types</p>
+                    </div>
+                </div>
+
+                <!-- Product Card 4: Manifold Systems -->
+                <div class="product-card" onclick="openProductDetail('manifolds')">
+                    <div class="product-image-container">
+                        <div class="product-badge">Industrial</div>
+                        <img src="images/products/manifolds.jpg" alt="Manifold Systems" class="product-image">
+                        <div class="product-overlay">
+                            <div class="overlay-content">
+                                <h4>Manifold Systems</h4>
+                                <p>Explore our high-performance manifold solutions</p>
+                                <button class="btn-view-details">
+                                    <i class="fas fa-eye"></i>
+                                    View All Parts
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Manifold Systems</h3>
+                        <p>3 Manifold Types</p>
+                    </div>
+                </div>
+
+                <!-- Product Card 5: Brake Components -->
+                <div class="product-card" onclick="openProductDetail('brakes')">
+                    <div class="product-image-container">
+                        <div class="product-badge">Railway</div>
+                        <img src="images/products/brake-components.jpg" alt="Brake Components" class="product-image">
+                        <div class="product-overlay">
+                            <div class="overlay-content">
+                                <h4>Brake System Parts</h4>
+                                <p>See our safety-critical brake components</p>
+                                <button class="btn-view-details">
+                                    <i class="fas fa-eye"></i>
+                                    View All Parts
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Brake Components</h3>
+                        <p>2 Safety Parts</p>
+                    </div>
+                </div>
+
+                <!-- Product Card 6: Custom Components -->
+                <div class="product-card" onclick="openProductDetail('custom')">
+                    <div class="product-image-container">
+                        <div class="product-badge">Custom</div>
+                        <img src="images/products/custom-components.png" alt="Custom Components" class="product-image">
+                        <div class="product-overlay">
+                            <div class="overlay-content">
+                                <h4>Custom Components</h4>
+                                <p>Discover our custom machining capabilities</p>
+                                <button class="btn-view-details">
+                                    <i class="fas fa-eye"></i>
+                                    View All Parts
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Custom Components</h3>
+                        <p>4 Custom Parts</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+     PRODUCT DETAIL MODALS - ALL CATEGORIES
+     ============================================ -->
+
+    <!-- ENGINE COMPONENTS MODAL -->
+    <div id="productModal-engine" class="product-detail-modal">
+        <div class="product-detail-content">
+            <div class="product-detail-header">
+                <span class="product-detail-close" onclick="closeProductDetail('engine')">&times;</span>
+                <h2>Engine Components</h2>
+                <span class="category-badge">Automotive</span>
+            </div>
+
+            <div class="product-detail-body">
+                <div class="product-intro">
+                    <p>Our engine components are precision-machined to meet the strictest automotive OEM standards. With
+                        over 30 years of experience, we manufacture critical engine parts that deliver reliability and
+                        performance for passenger vehicles, commercial trucks, and industrial engines.</p>
+                </div>
+
+                <div class="parts-grid">
+                    <!-- Part 1: Timing Cover Assembly -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part01.jpg" alt="Timing Cover Assembly" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> Timing Cover Assembly</h4>
+                            <p class="part-description">
+                                Precision-machined aluminum timing cover with integrated mounting bosses and multiple
+                                port
+                                openings. Features a cylindrical extension for oil pump drive shaft housing. Complex
+                                geometry designed for timing chain protection and oil routing.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: Aluminum alloy ADC12</li>
+                                    <li><i class="fas fa-check-circle"></i> Mounting holes: 8 bolt pattern</li>
+                                    <li><i class="fas fa-check-circle"></i> Surface finish: Ra 1.6 μm on gasket surfaces
+                                    </li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: Diesel engines, commercial
+                                        vehicles</li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-industry"></i>
+                                <span>4-axis CNC machining for complex internal features</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 4: IVECO Engine Front Cover -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part04.jpg" alt="IVECO Engine Front Cover" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> IVECO Engine Front Cover</h4>
+                            <p class="part-description">
+                                Large timing cover designed specifically for IVECO diesel engines. Features complex
+                                internal
+                                ribbing for structural integrity and multiple mounting flanges. Precision-machined
+                                bearing
+                                bores and seal surfaces ensure leak-proof operation.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: Aluminum alloy with powder coating
+                                    </li>
+                                    <li><i class="fas fa-check-circle"></i> Brand compatibility: IVECO engines</li>
+                                    <li><i class="fas fa-check-circle"></i> Bearing bore tolerance: H7 precision</li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: Heavy-duty commercial vehicles
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>100% air pressure leak tested - FEA-optimized rib structure</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 5: Engine Timing Cover (Dual Port) -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part05.jpg" alt="Engine Timing Cover" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> Engine Timing Cover (Dual Port)</h4>
+                            <p class="part-description">
+                                Advanced timing cover featuring dual circular openings for bearing housings and complex
+                                internal passages. Ribbed construction provides exceptional strength while minimizing
+                                weight.
+                                Multiple mounting flanges for secure installation.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: Cast aluminum alloy</li>
+                                    <li><i class="fas fa-check-circle"></i> Dual bearing bores with ±0.03mm
+                                        concentricity
+                                    </li>
+                                    <li><i class="fas fa-check-circle"></i> Wall thickness: 4-6mm optimized design</li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: Modern diesel and petrol
+                                        engines
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-tools"></i>
+                                <span>4-axis simultaneous machining - CMM verified concentricity</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 13: Valve Cover with Branding -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part13.jpg" alt="Valve Cover with Branding" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> Valve Cover with Branding</h4>
+                            <p class="part-description">
+                                Long-form valve cover designed for multi-cylinder engines. Features integrated PCV
+                                system
+                                ports and oil filler location. Reinforced edges prevent warping under high temperatures.
+                                Surface stamping indicates OEM partnership.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: Aluminum with powder coating</li>
+                                    <li><i class="fas fa-check-circle"></i> Flatness: Within 0.03mm across gasket
+                                        surface
+                                    </li>
+                                    <li><i class="fas fa-check-circle"></i> Heat resistance: Up to 150°C continuous</li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: 4-6 cylinder engines</li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-medal"></i>
+                                <span>100% pressure tested - Custom branding available</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 14: Engine Valve Cover -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part14.jpg" alt="Engine Valve Cover" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> Engine Valve Cover</h4>
+                            <p class="part-description">
+                                Standard valve cover with clean lines and robust construction. Features multiple
+                                mounting
+                                points and integrated seal grooves. Designed for reliable sealing and easy
+                                serviceability.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: Aluminum alloy</li>
+                                    <li><i class="fas fa-check-circle"></i> Gasket groove: Precision-machined</li>
+                                    <li><i class="fas fa-check-circle"></i> Weight: Lightweight design</li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: Passenger cars, LCVs</li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-crosshairs"></i>
+                                <span>CNC machined flat surfaces - Corrosion-resistant coating</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 16: Complex Engine Front Cover -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part16.jpg" alt="Complex Engine Front Cover" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> Complex Engine Front Cover</h4>
+                            <p class="part-description">
+                                Multi-feature engine front cover with integrated bearing housings and oil circulation
+                                channels. Features asymmetric design for specific engine applications. Complex casting
+                                with
+                                precision-machined critical surfaces.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: Ductile iron GG25 / Aluminum</li>
+                                    <li><i class="fas fa-check-circle"></i> Multiple bearing bores with tight tolerances
+                                    </li>
+                                    <li><i class="fas fa-check-circle"></i> Seal surfaces: Ground finish Ra 0.8 μm</li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: Heavy-duty diesel engines</li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-tools"></i>
+                                <span>Advanced 5-axis machining - 100% leak tested</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 17: Timing Cover with Dual Bearing Housings -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part17.jpg" alt="Timing Cover Dual Bearing" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> Timing Cover with Dual Bearing Housings</h4>
+                            <p class="part-description">
+                                Sophisticated timing cover featuring dual large-diameter bearing housings connected by
+                                reinforced webbing. Optimized for high-torque applications with integrated mounting
+                                bosses
+                                and oil routing.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: High-strength aluminum alloy</li>
+                                    <li><i class="fas fa-check-circle"></i> Concentricity: Within 0.05mm TIR</li>
+                                    <li><i class="fas fa-check-circle"></i> Structural ribbing: FEA-optimized</li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: Commercial vehicles,
+                                        agriculture
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-industry"></i>
+                                <span>4-axis continuous path machining - CMM verified</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 20: Cylinder Head End Cover -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part20.jpg" alt="Cylinder Head End Cover" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> Cylinder Head End Cover</h4>
+                            <p class="part-description">
+                                Rectangular end cover for cylinder head applications. Features precision-machined gasket
+                                surface with multiple mounting holes for secure clamping. Designed to seal the end of
+                                cylinder heads or timing chain housings.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: Aluminum alloy / Cast iron</li>
+                                    <li><i class="fas fa-check-circle"></i> Gasket surface flatness: ±0.02mm</li>
+                                    <li><i class="fas fa-check-circle"></i> Wall thickness: 5-8mm for rigidity</li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: Cylinder head closures</li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-crosshairs"></i>
+                                <span>CNC milled flat surfaces - Flatness verified</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 23: Engine Link Support Bracket -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part23.jpg" alt="Engine Link Support Bracket" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> Engine Link Support Bracket</h4>
+                            <p class="part-description">
+                                Heavy-duty engine link support featuring reinforced ribbing for strength and vibration
+                                resistance. Multiple mounting holes for secure attachment to engine block or chassis.
+                                Optimized design for load distribution.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: High-strength aluminum / Steel
+                                    </li>
+                                    <li><i class="fas fa-check-circle"></i> Load capacity: Up to 300 kg static</li>
+                                    <li><i class="fas fa-check-circle"></i> Surface treatment: Powder coating /
+                                        E-coating
+                                    </li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: Engine mounts, support
+                                        brackets
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Stress-tested to 150% capacity - FEA verified</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 25: Engine Support Bracket (Curved) -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part25.jpg" alt="Engine Support Bracket Curved" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> Engine Support Bracket (Curved)</h4>
+                            <p class="part-description">
+                                Curved engine support bracket designed for specific mounting angles. Features robust
+                                construction with multiple mounting points. Engineered to absorb vibration while
+                                maintaining
+                                engine position.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: High-strength steel / Aluminum
+                                    </li>
+                                    <li><i class="fas fa-check-circle"></i> Curved design: Application-specific geometry
+                                    </li>
+                                    <li><i class="fas fa-check-circle"></i> Surface treatment: Corrosion-resistant</li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: Engine mounts, chassis
+                                        brackets
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-tools"></i>
+                                <span>Load tested - Vibration damping verified</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-detail-footer">
+                <div class="footer-info">
+                    <i class="fas fa-phone"></i> Need custom specifications? Call +91 9150400011
+                </div>
+                <button class="btn-request-quote" onclick="closeProductDetail('engine'); openQuoteModal();">
+                    <i class="fas fa-calculator"></i>
+                    Request Quote
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TRANSMISSION COMPONENTS MODAL -->
+    <div id="productModal-transmission" class="product-detail-modal">
+        <div class="product-detail-content">
+            <div class="product-detail-header">
+                <span class="product-detail-close" onclick="closeProductDetail('transmission')">&times;</span>
+                <h2>Transmission Components</h2>
+                <span class="category-badge">Automotive</span>
+            </div>
+
+            <div class="product-detail-body">
+                <div class="product-intro">
+                    <p>Our transmission components are engineered for durability and precision. We manufacture gearbox
+                        housings, clutch components, and transmission covers that meet the demanding requirements of
+                        modern automotive and heavy-duty applications.</p>
+                </div>
+
+                <div class="parts-grid">
+                    <!-- Part 11: Transmission End Cover -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part11.jpg" alt="Transmission End Cover" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> Transmission End Cover</h4>
+                            <p class="part-description">
+                                Large circular transmission end cover featuring concentric seal grooves and precision
+                                bearing bore. Heavy-duty construction suitable for manual and automatic transmission
+                                applications. Multiple mounting holes ensure secure installation.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: Aluminum alloy / Ductile iron</li>
+                                    <li><i class="fas fa-check-circle"></i> Bearing bore tolerance: H7 precision</li>
+                                    <li><i class="fas fa-check-circle"></i> Flatness: 0.03mm across mating surface</li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: Manual transmissions, transfer
+                                        cases</li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-crosshairs"></i>
+                                <span>Bearing bore ground to specification - 100% dimensional verification</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 12: Gearbox Bearing Housing -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part12.jpg" alt="Gearbox Bearing Housing" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> Gearbox Bearing Housing</h4>
+                            <p class="part-description">
+                                Robust bearing housing with integrated flange and cylindrical boss for shaft mounting.
+                                Features multiple bolt holes for secure attachment to gearbox housing. Designed to
+                                support
+                                high radial and axial loads.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: High-strength aluminum alloy</li>
+                                    <li><i class="fas fa-check-circle"></i> Bearing bore: H6/H7 precision ground</li>
+                                    <li><i class="fas fa-check-circle"></i> Flange thickness: Heavy-duty for load
+                                        distribution</li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: Gearbox covers, differential
+                                        housings</li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Load tested to 150% capacity - CMM verified concentricity</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 21: Gearbox Cover Plate -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part21.jpg" alt="Gearbox Cover Plate" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> Gearbox Cover Plate</h4>
+                            <p class="part-description">
+                                Transmission end cover featuring circular bearing bore with integrated mounting flange.
+                                Asymmetric design with precision-machined bearing seat and multiple mounting holes.
+                                Suitable
+                                for gearbox end closures and bearing housings.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: Aluminum alloy / Ductile iron</li>
+                                    <li><i class="fas fa-check-circle"></i> Bearing bore: H7 precision tolerance</li>
+                                    <li><i class="fas fa-check-circle"></i> Wall reinforcement: Ribbed structure</li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: Gearbox covers, transmission
+                                        housings</li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-industry"></i>
+                                <span>Multi-axis CNC machining - CMM inspection verified</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-detail-footer">
+                <div class="footer-info">
+                    <i class="fas fa-envelope"></i> Email specifications to ei1995@gmail.com
+                </div>
+                <button class="btn-request-quote" onclick="closeProductDetail('transmission'); openQuoteModal();">
+                    <i class="fas fa-calculator"></i>
+                    Request Quote
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PUMP COMPONENTS MODAL -->
+    <div id="productModal-pumps" class="product-detail-modal">
+        <div class="product-detail-content">
+            <div class="product-detail-header">
+                <span class="product-detail-close" onclick="closeProductDetail('pumps')">&times;</span>
+                <h2>Pump Components</h2>
+                <span class="category-badge">Industrial</span>
+            </div>
+
+            <div class="product-detail-body">
+                <div class="product-intro">
+                    <p>Our pump components are precision-engineered for high-pressure applications across water cooling,
+                        oil circulation, and hydraulic systems. We manufacture robust pump housings that deliver
+                        reliable
+                        performance in demanding industrial and automotive environments.</p>
+                </div>
+
+                <div class="parts-grid">
+                    <!-- Part 2: Pump Housing with Flange -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part02.jpg" alt="Pump Housing with Flange" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> Pump Housing with Flange</h4>
+                            <p class="part-description">
+                                Precision pump housing featuring large flange with evenly distributed mounting holes.
+                                Central bore houses shaft bearings and seals. Robust construction suitable for
+                                high-pressure
+                                applications.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: Aluminum alloy / Cast iron</li>
+                                    <li><i class="fas fa-check-circle"></i> Bearing bore: H7 precision tolerance</li>
+                                    <li><i class="fas fa-check-circle"></i> Pressure rating: Up to 150 bar</li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: Water pumps, oil pumps,
+                                        hydraulic
+                                        pumps</li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-medal"></i>
+                                <span>100% pressure tested - Balanced for high-speed operation</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 10: Compact Pump Housing -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part10.jpg" alt="Compact Pump Housing" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> Compact Pump Housing</h4>
+                            <p class="part-description">
+                                Small-format pump housing or thermostat housing with integrated mounting flange. Compact
+                                design suitable for auxiliary systems and space-constrained applications.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: Aluminum alloy ADC12</li>
+                                    <li><i class="fas fa-check-circle"></i> Port openings: Precision-machined</li>
+                                    <li><i class="fas fa-check-circle"></i> Mounting pattern: 4-bolt configuration</li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: Thermostat housings, small
+                                        pumps
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-tools"></i>
+                                <span>3-axis CNC machining - Leak tested to specification</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 22: Pump Housing with Outlet -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part22.jpg" alt="Pump Housing with Outlet" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> Pump Housing with Outlet</h4>
+                            <p class="part-description">
+                                Pump housing featuring large circular flange with integrated outlet tube. Designed for
+                                water
+                                pump or oil pump applications with high-flow requirements. Robust construction with
+                                evenly
+                                distributed mounting holes.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: Aluminum alloy ADC12</li>
+                                    <li><i class="fas fa-check-circle"></i> Bearing bore: Precision with seal grooves
+                                    </li>
+                                    <li><i class="fas fa-check-circle"></i> Pressure rating: Up to 100 bar</li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: Water pumps, coolant pumps
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-medal"></i>
+                                <span>100% pressure and leak tested - High-speed balanced</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-detail-footer">
+                <div class="footer-info">
+                    <i class="fas fa-phone"></i> High-pressure applications? Call +91 9150400011
+                </div>
+                <button class="btn-request-quote" onclick="closeProductDetail('pumps'); openQuoteModal();">
+                    <i class="fas fa-calculator"></i>
+                    Request Quote
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MANIFOLD SYSTEMS MODAL -->
+    <div id="productModal-manifolds" class="product-detail-modal">
+        <div class="product-detail-content">
+            <div class="product-detail-header">
+                <span class="product-detail-close" onclick="closeProductDetail('manifolds')">&times;</span>
+                <h2>Manifold Systems</h2>
+                <span class="category-badge">Industrial</span>
+            </div>
+
+            <div class="product-detail-body">
+                <div class="product-intro">
+                    <p>Our manifold systems are engineered for high-temperature exhaust and intake applications. From
+                        precision flanges to complex tubular sections, we manufacture manifold components that withstand
+                        thermal cycling while maintaining optimal flow characteristics.</p>
+                </div>
+
+                <div class="parts-grid">
+                    <!-- Part 6: Exhaust Manifold Flange -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part06.jpg" alt="Exhaust Manifold Flange" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> Exhaust Manifold Flange</h4>
+                            <p class="part-description">
+                                Twin-port exhaust manifold flange designed for dual-cylinder exhaust systems.
+                                Precision-machined port openings with smooth transitions. Mounting holes for secure
+                                attachment to cylinder head or manifold body.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: High-temperature steel / Cast iron
+                                    </li>
+                                    <li><i class="fas fa-check-circle"></i> Port diameter: Precision-machined</li>
+                                    <li><i class="fas fa-check-circle"></i> Flatness: Critical for exhaust sealing</li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: Exhaust manifolds, turbo
+                                        flanges
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-fire"></i>
+                                <span>Heat-treated for dimensional stability - Ground flat</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 15: Exhaust Manifold Section -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part15.jpg" alt="Exhaust Manifold Section" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> Exhaust Manifold Section</h4>
+                            <p class="part-description">
+                                Tubular exhaust manifold section featuring cast construction with integrated flanges.
+                                Smooth
+                                internal passages for optimal exhaust flow. Reinforced mounting points for vibration
+                                resistance.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: Cast iron / Stainless steel</li>
+                                    <li><i class="fas fa-check-circle"></i> Wall thickness: Heavy-duty for thermal
+                                        cycling
+                                    </li>
+                                    <li><i class="fas fa-check-circle"></i> Heat resistance: Up to 800°C continuous</li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: Exhaust manifolds, exhaust
+                                        systems</li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-fire"></i>
+                                <span>Pressure tested - Heat-treated for thermal stability</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 24: Manifold Tube Section -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part24.jpg" alt="Manifold Tube Section" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> Manifold Tube Section</h4>
+                            <p class="part-description">
+                                Tubular manifold section with smooth internal bore for optimal fluid flow. Features
+                                precision-machined ends for secure connection to manifold systems. Suitable for exhaust
+                                or
+                                intake manifold applications.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: Stainless steel / Cast iron</li>
+                                    <li><i class="fas fa-check-circle"></i> Internal bore: Smooth finish for flow</li>
+                                    <li><i class="fas fa-check-circle"></i> Heat resistance: Up to 800°C continuous</li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: Exhaust manifolds, intake
+                                        runners
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-tools"></i>
+                                <span>CNC turned surfaces - Internal bore honed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-detail-footer">
+                <div class="footer-info">
+                    <i class="fas fa-envelope"></i> Custom manifold designs? Email ei1995@gmail.com
+                </div>
+                <button class="btn-request-quote" onclick="closeProductDetail('manifolds'); openQuoteModal();">
+                    <i class="fas fa-calculator"></i>
+                    Request Quote
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BRAKE COMPONENTS MODAL - FIXED -->
+    <div id="productModal-brakes" class="product-detail-modal">
+        <div class="product-detail-content">
+            <div class="product-detail-header">
+                <span class="product-detail-close" onclick="closeProductDetail('brakes')">&times;</span>
+                <h2>Brake Components</h2>
+                <span class="category-badge">Railway</span>
+            </div>
+
+            <div class="product-detail-body">
+                <div class="product-intro">
+                    <p>Our brake components meet the stringent safety requirements of railway and automotive brake
+                        systems.
+                        We manufacture precision hydraulic housings and brake system components that undergo rigorous
+                        testing to ensure reliable, fail-safe performance in critical applications.</p>
+                </div>
+
+                <div class="parts-grid">
+                    <!-- Part 7: Hydraulic Twin-Bore Housing -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part07.jpg" alt="Hydraulic Twin-Bore Housing" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> Hydraulic Twin-Bore Housing</h4>
+                            <p class="part-description">
+                                Twin-bore hydraulic housing suitable for brake systems or hydraulic control
+                                applications.
+                                Features two precision-bored cylinders with integrated mounting provisions. Clean
+                                internal
+                                passages for fluid routing.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: Aluminum with anodized finish</li>
+                                    <li><i class="fas fa-check-circle"></i> Bore alignment: ±0.05mm tolerance</li>
+                                    <li><i class="fas fa-check-circle"></i> Pressure rating: Brake system compatible
+                                    </li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: Brake cylinders, hydraulic
+                                        manifolds</li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Precision boring and honing - Leak tested at operating pressure</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 9: Brake Component Housing -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part09.jpg" alt="Brake Component Housing" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> Brake Component Housing</h4>
+                            <p class="part-description">
+                                Complex brake system housing with internal features for valve or piston mechanisms.
+                                Robust
+                                construction suitable for safety-critical railway or automotive brake applications.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: High-strength aluminum / Steel
+                                    </li>
+                                    <li><i class="fas fa-check-circle"></i> Internal features: Precision valve seats
+                                    </li>
+                                    <li><i class="fas fa-check-circle"></i> Pressure rating: High-pressure brake systems
+                                    </li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: Railway brakes, heavy vehicle
+                                        brakes</li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>100% pressure tested - Quality verified to safety standards</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-detail-footer">
+                <div class="footer-info">
+                    <i class="fas fa-phone"></i> Safety-critical components? Call +91 9150400011
+                </div>
+                <button class="btn-request-quote" onclick="closeProductDetail('brakes'); openQuoteModal();">
+                    <i class="fas fa-calculator"></i>
+                    Request Quote
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOM COMPONENTS MODAL -->
+    <div id="productModal-custom" class="product-detail-modal">
+        <div class="product-detail-content">
+            <div class="product-detail-header">
+                <span class="product-detail-close" onclick="closeProductDetail('custom')">&times;</span>
+                <h2>Custom Components</h2>
+                <span class="category-badge">Custom</span>
+            </div>
+
+            <div class="product-detail-body">
+                <div class="product-intro">
+                    <p>Our custom component capabilities extend to specialized applications across industries. From
+                        access
+                        covers to sensor housings and adapter plates, we manufacture precision components tailored to
+                        your
+                        exact specifications and unique requirements.</p>
+                </div>
+
+                <div class="parts-grid">
+                    <!-- Part 3: Circular Access Cover -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part03.jpg" alt="Circular Access Cover" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> Circular Access Cover</h4>
+                            <p class="part-description">
+                                Simple circular cover plate with mounting lugs for securing to housings or enclosures.
+                                Versatile design suitable for access covers, inspection ports, or end caps.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: Aluminum with finish coating</li>
+                                    <li><i class="fas fa-check-circle"></i> Mounting lugs: Integrated bolt attachment
+                                    </li>
+                                    <li><i class="fas fa-check-circle"></i> Surface finish: Powder-coated / Anodized
+                                    </li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: Access covers, inspection
+                                        ports
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-tools"></i>
+                                <span>CNC machined - Available in various sizes</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 8: Compact Component Housing -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part08.jpg" alt="Compact Component Housing" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> Compact Component Housing</h4>
+                            <p class="part-description">
+                                Small rectangular housing suitable for electrical components, sensors, or control
+                                modules.
+                                Features precise internal cavity and external mounting provisions.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: Aluminum alloy / Plastic</li>
+                                    <li><i class="fas fa-check-circle"></i> Internal cavity: Precision-machined</li>
+                                    <li><i class="fas fa-check-circle"></i> Mounting: 4-corner configuration</li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: Sensor housings, electrical
+                                        enclosures</li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-microchip"></i>
+                                <span>Precision internal features - Threaded inserts available</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 18: Multi-Port Manifold Plate -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part18.jpg" alt="Multi-Port Manifold Plate" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> Multi-Port Manifold Plate</h4>
+                            <p class="part-description">
+                                Flat manifold plate with multiple port openings and mounting holes. Suitable for fluid
+                                distribution, gasket interfaces, or adapter plates.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: Aluminum / Steel plate</li>
+                                    <li><i class="fas fa-check-circle"></i> Port openings: Precision-machined</li>
+                                    <li><i class="fas fa-check-circle"></i> Flatness: Critical for sealing</li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: Manifold plates, adapter
+                                        plates
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-crosshairs"></i>
+                                <span>CNC milled from plate stock - Flatness verified</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 19: Small Access Cover -->
+                    <div class="part-item">
+                        <div class="part-image-wrapper">
+                            <img src="images/parts/Part19.jpg" alt="Small Access Cover" class="part-image">
+                        </div>
+                        <div class="part-details">
+                            <h4><i class="fas fa-cog"></i> Small Access Cover</h4>
+                            <p class="part-description">
+                                Compact housing cover with single port opening and mounting provisions. Suitable for
+                                small
+                                access covers or component housings.
+                            </p>
+                            <div class="part-specs">
+                                <h5>Key Specifications</h5>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Material: Aluminum alloy</li>
+                                    <li><i class="fas fa-check-circle"></i> Port opening: Single circular opening</li>
+                                    <li><i class="fas fa-check-circle"></i> Mounting: 4-bolt configuration</li>
+                                    <li><i class="fas fa-check-circle"></i> Applications: Access covers, small
+                                        enclosures
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="capability-highlight">
+                                <i class="fas fa-tools"></i>
+                                <span>CNC machined - Lightweight design</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-detail-footer">
+                <div class="footer-info">
+                    <i class="fas fa-envelope"></i> Custom requirements? Email ei1995@gmail.com
+                </div>
+                <button class="btn-request-quote" onclick="closeProductDetail('custom'); openQuoteModal();">
+                    <i class="fas fa-calculator"></i>
+                    Request Quote
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Equipment Section -->
     <section id="equipment" class="equipment section">
@@ -2289,6 +3969,159 @@
                 });
             }
         });
+
+        // Product Detail Modal Functions
+        function openProductDetail(productId) {
+            const modal = document.getElementById('productModal-' + productId);
+            if (modal) {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+
+                // Add fade-in animation
+                setTimeout(() => {
+                    modal.style.opacity = '1';
+                }, 10);
+            }
+        }
+
+        function closeProductDetail(productId) {
+            const modal = document.getElementById('productModal-' + productId);
+            if (modal) {
+                modal.style.opacity = '0';
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto'; // Restore scrolling
+                }, 300);
+            }
+        }
+
+        // Close modal when clicking outside the content
+        window.addEventListener('click', function (event) {
+            if (event.target.classList.contains('product-detail-modal')) {
+                // Find which modal was clicked
+                const modalId = event.target.id;
+                if (modalId && modalId.startsWith('productModal-')) {
+                    const productId = modalId.replace('productModal-', '');
+                    closeProductDetail(productId);
+                }
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                // Close all open product modals
+                const openModals = document.querySelectorAll('.product-detail-modal[style*="display: block"]');
+                openModals.forEach(modal => {
+                    const modalId = modal.id;
+                    if (modalId && modalId.startsWith('productModal-')) {
+                        const productId = modalId.replace('productModal-', '');
+                        closeProductDetail(productId);
+                    }
+                });
+            }
+        });
+
+        // Prevent modal content clicks from closing the modal
+        document.addEventListener('DOMContentLoaded', function () {
+            const modalContents = document.querySelectorAll('.product-detail-content');
+            modalContents.forEach(content => {
+                content.addEventListener('click', function (event) {
+                    event.stopPropagation();
+                });
+            });
+        });
+
+        // Smooth scroll for anchor links within modals
+        document.querySelectorAll('.product-detail-modal a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Image lazy loading for part images (optional performance optimization)
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                            observer.unobserve(img);
+                        }
+                    }
+                });
+            });
+
+            // Observe all part images
+            document.querySelectorAll('.part-image[data-src]').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+
+        // Analytics tracking for product views (optional)
+        function trackProductView(productName) {
+            // Add your analytics code here
+            console.log('Product viewed: ' + productName);
+
+            // Example Google Analytics 4
+            // gtag('event', 'view_item', {
+            //     'items': [{
+            //         'item_name': productName,
+            //         'item_category': 'Products'
+            //     }]
+            // });
+        }
+
+        // Call tracking when modal opens
+        const originalOpenProductDetail = openProductDetail;
+        openProductDetail = function (productId) {
+            originalOpenProductDetail(productId);
+            trackProductView(productId);
+        };
+
+        // Mobile Menu Functions
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('navMenu');
+            const menuToggle = document.querySelector('.mobile-menu-toggle');
+
+            navMenu.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+
+            // Prevent body scroll when menu is open
+            if (navMenu.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function closeMobileMenu() {
+            const navMenu = document.getElementById('navMenu');
+            const menuToggle = document.querySelector('.mobile-menu-toggle');
+
+            navMenu.classList.remove('active');
+            menuToggle.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close mobile menu on window resize to desktop
+        window.addEventListener('resize', function () {
+            if (window.innerWidth > 768) {
+                closeMobileMenu();
+            }
+        });
+
+
+
     </script>
     <a href="https://wa.me/8800954628" class="whatsapp-float" target="_blank">
         <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Logo" />
@@ -2338,6 +4171,409 @@
 
         .whatsapp-float:hover span {
             opacity: 1;
+        }
+
+        /* ===================================
+   IMPROVED RESPONSIVE & TRANSITIONS
+   =================================== */
+
+        /* Mobile Navigation */
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 1001;
+        }
+
+        .mobile-menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(7px, 7px);
+        }
+
+        .mobile-menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: var(--primary);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1rem;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                border-bottom: 1px solid var(--glass-border);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+                max-height: calc(100vh - 70px);
+                overflow-y: auto;
+            }
+
+            .nav-menu.active {
+                transform: translateX(0);
+            }
+
+            .nav-menu a {
+                padding: 1rem;
+                text-align: center;
+                border-bottom: 1px solid var(--glass-border);
+            }
+
+            .quick-quote-btn {
+                width: 100%;
+                text-align: center;
+                justify-content: center;
+            }
+        }
+
+        /* Enhanced Transitions */
+        * {
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .btn-primary,
+        .btn-secondary,
+        .quick-quote-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .capability-card,
+        .customer-card,
+        .equipment-card,
+        .product-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Improved Modal Transitions */
+        .modal,
+        .product-detail-modal {
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-content,
+        .product-detail-content {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* ===================================
+   COMPREHENSIVE RESPONSIVE DESIGN
+   =================================== */
+
+        /* Tablet (768px - 1024px) */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+                padding: 2rem 1rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2.8rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .capabilities-grid,
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+
+            .equipment-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .equipment-card:nth-child(n) {
+                grid-column: auto;
+            }
+
+            .contact-grid {
+                gap: 2rem;
+            }
+        }
+
+        /* Mobile (up to 768px) */
+        @media (max-width: 768px) {
+
+            /* Typography */
+            .hero-text h1 {
+                font-size: 2rem;
+                line-height: 1.2;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .hero-description {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .section-subtitle {
+                font-size: 1rem;
+            }
+
+            /* Layout */
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding: 1rem;
+            }
+
+            .hero-stats {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+
+            /* Grids */
+            .capabilities-grid,
+            .products-grid,
+            .equipment-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .customers-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            /* Cards */
+            .capability-card,
+            .product-card {
+                min-width: 100%;
+            }
+
+            .product-image-container {
+                height: 220px;
+            }
+
+            /* Forms */
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .modal-content,
+            .product-detail-content {
+                width: 95%;
+                margin: 2% auto;
+                border-radius: 15px;
+            }
+
+            .modal-header,
+            .product-detail-header {
+                padding: 1.5rem;
+            }
+
+            .modal-header h2,
+            .product-detail-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .modal-body,
+            .product-detail-body {
+                padding: 1.5rem;
+                max-height: 60vh;
+            }
+
+            /* Parts Grid */
+            .parts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* Equipment Cards */
+            .equipment-card {
+                height: 280px;
+            }
+
+            .card-front,
+            .card-back {
+                padding: 1.5rem;
+            }
+
+            /* WhatsApp Button */
+            .whatsapp-float {
+                bottom: 15px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+            }
+
+            .whatsapp-float img {
+                width: 25px;
+                height: 25px;
+                margin-left: 8px;
+            }
+
+            .whatsapp-float:hover {
+                width: 120px;
+            }
+
+            /* Footer */
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* Small Mobile (up to 480px) */
+        @media (max-width: 480px) {
+            .hero-text h1 {
+                font-size: 1.8rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .nav-container {
+                padding: 0.75rem 1rem;
+            }
+
+            .logo {
+                font-size: 1.4rem;
+            }
+
+            .logo-img {
+                height: 60px;
+            }
+
+            .stat-number {
+                font-size: 1.5rem;
+            }
+
+            .customer-logo-wrapper {
+                width: 100px;
+                height: 100px;
+            }
+
+            .customer-logo {
+                max-width: 150%;
+                max-height: 120%;
+            }
+
+            .customers-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-info h3,
+            .contact-form h3 {
+                font-size: 1.5rem;
+            }
+
+            .whatsapp-float:hover {
+                width: 110px;
+            }
+        }
+
+        /* Landscape Mobile */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .hero {
+                min-height: auto;
+                padding: 4rem 0;
+            }
+
+            .hero-stats {
+                margin-bottom: 1rem;
+            }
+
+            .modal-body,
+            .product-detail-body {
+                max-height: 50vh;
+            }
+        }
+
+        /* Fix for iOS Safari */
+        @supports (-webkit-touch-callout: none) {
+            .hero {
+                min-height: -webkit-fill-available;
+            }
+
+            .modal-content,
+            .product-detail-content {
+                max-height: -webkit-fill-available;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+
+            .header,
+            .footer,
+            .whatsapp-float,
+            .quick-quote-btn {
+                display: none;
+            }
+
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* High Contrast Mode */
+        @media (prefers-contrast: high) {
+
+            .glass,
+            .glass-border {
+                border-width: 2px;
+            }
+
+            .btn-primary,
+            .btn-secondary {
+                border: 2px solid currentColor;
+            }
         }
     </style>
 </body>

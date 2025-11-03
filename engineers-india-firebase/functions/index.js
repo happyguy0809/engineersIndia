@@ -1,9 +1,11 @@
-// functions/index.js - Firebase Cloud Functions for Engineers India
+// FIRST LINE - Load environment variables
+require('dotenv').config();
+
+// functions/index.js - Firebase Cloud Functions for Engineers India v2
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-const nodemailer = require('nodemailer').default || require('nodemailer');
-const cors = require('cors')({origin: true});
-const busboy = require('busboy');
+const { createTransport } = require('nodemailer');
+const cors = require('cors')({ origin: true, credentials: true });
 const path = require('path');
 const os = require('os');
 const fs = require('fs');
@@ -15,337 +17,279 @@ let transporter;
 
 function getTransporter() {
   if (!transporter) {
-    transporter = nodemailer.createTransporter({
+    const emailUser = process.env.EMAIL_USER;
+    const emailPass = process.env.EMAIL_PASS;
+    
+    if (!emailUser || !emailPass) {
+      throw new Error('Email configuration missing');
+    }
+    
+    transporter = createTransport({
       service: 'gmail',
-      auth: {
-        user: functions.config().email.user,
-        pass: functions.config().email.pass
-      }
+      auth: { user: emailUser, pass: emailPass }
     });
   }
   return transporter;
 }
 
-// WhatsApp notification numbers
-const NOTIFICATION_NUMBERS = [
-  '918800954628',  // Number 1 - update with your actual numbers
-  '919150400011',  // Number 2 - update with your actual numbers  
-  '919176982286'   // Number 3 - update with your actual numbers
-];
+// WhatsApp notifications
+const NOTIFICATION_NUMBERS = ['918800954628', '919150400011', '919176982286'];
 
-// Function to send WhatsApp notifications
 async function sendWhatsAppAlerts(alertType, companyName = '') {
-  const notifications = [];
-  
   const messages = {
-    quote: `🔔 NEW QUOTE REQUEST\nFrom: ${companyName}\nCheck email: ei1995@gmail.com\nTime: ${new Date().toLocaleString('en-IN')}`,
-    contact: `📞 NEW CONTACT MESSAGE\nFrom: ${companyName}\nCheck email: ei1995@gmail.com\nTime: ${new Date().toLocaleString('en-IN')}`
+    quote: `🔔 NEW QUOTE REQUEST\nFrom: ${companyName}\nCheck: happyguy0809@gmail.com`,
+    contact: `📞 NEW CONTACT\nFrom: ${companyName}\nCheck: happyguy0809@gmail.com`
   };
 
-  const message = messages[alertType] || `📧 New email received\nCheck: ei1995@gmail.com`;
-
-  // Send to all 3 numbers via webhook
-  for (const number of NOTIFICATION_NUMBERS) {
-    try {
-      // Using webhook (Zapier/Pabbly)
-      const webhookUrl = functions.config().whatsapp?.webhook_url;
-      if (webhookUrl) {
-        const response = await fetch(webhookUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            phone: number,
-            message: message,
-            timestamp: new Date().toISOString()
-          })
-        });
-        
-        if (response.ok) {
-          notifications.push(`WhatsApp sent to ${number}`);
+  try {
+    const webhookUrl = process.env.WHATSAPP_WEBHOOK_URL;
+    if (webhookUrl) {
+      for (const number of NOTIFICATION_NUMBERS) {
+        try {
+          await fetch(webhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ phone: number, message: messages[alertType] })
+          });
+        } catch (error) {
+          console.error(`WhatsApp error for ${number}:`, error.message);
         }
       }
-    } catch (error) {
-      console.error(`WhatsApp error for ${number}:`, error);
     }
+  } catch (error) {
+    console.log('WhatsApp skipped:', error.message);
   }
-  
-  console.log('WhatsApp notifications:', notifications.join(', ') || 'None sent');
-  return notifications.length > 0;
 }
-
-// Quote form submission
-exports.submitQuote = functions.https.onRequest((req, res) => {
-  cors(req, res, async () => {
-    if (req.method !== 'POST') {
-      return res.status(405).json({ success: false, message: 'Method not allowed' });
-    }
-
-    try {
-      const bb = busboy({ headers: req.headers });
-      const fields = {};
-      const files = [];
-      const tmpdir = os.tmpdir();
-
-      // Parse form data and files
-      bb.on('field', (fieldname, val) => {
-        fields[fieldname] = val;
-      });
-
-      bb.on('file', (fieldname, file, info) => {
-        const { filename, mimeType } = info;
-        const filepath = path.join(tmpdir, filename);
-        const writeStream = fs.createWriteStream(filepath);
-        
-        file.pipe(writeStream);
-        
-        files.push({
-          fieldname,
-          originalname: filename,
-          mimetype: mimeType,
-          path: filepath
-        });
-      });
-
-      bb.on('finish', async () => {
-        try {
-          const { company, contact_person, email, phone, component_type, quantity, material, timeline, description } = fields;
-
-          // Validate required fields
-          if (!company || !contact_person || !email || !component_type || !description) {
-            return res.status(400).json({ 
-              success: false, 
-              message: 'Please fill in all required fields' 
-            });
-          }
-
-          // Create detailed email
-          const emailHTML = `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-              <h2 style="color: #0A0E27; border-bottom: 3px solid #00D4FF; padding-bottom: 10px;">
-                New Quote Request - Engineers India
-              </h2>
-              
-              <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                <h3 style="color: #0A0E27; margin-top: 0;">Company Information</h3>
-                <table style="width: 100%; border-collapse: collapse;">
-                  <tr>
-                    <td style="padding: 8px; background: #e9ecef; font-weight: bold; width: 30%;">Company:</td>
-                    <td style="padding: 8px;">${company}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 8px; background: #e9ecef; font-weight: bold;">Contact Person:</td>
-                    <td style="padding: 8px;">${contact_person}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 8px; background: #e9ecef; font-weight: bold;">Email:</td>
-                    <td style="padding: 8px;">${email}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 8px; background: #e9ecef; font-weight: bold;">Phone:</td>
-                    <td style="padding: 8px;">${phone || 'Not provided'}</td>
-                  </tr>
-                </table>
-              </div>
-              
-              <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                <h3 style="color: #0A0E27; margin-top: 0;">Project Details</h3>
-                <table style="width: 100%; border-collapse: collapse;">
-                  <tr>
-                    <td style="padding: 8px; background: #e9ecef; font-weight: bold; width: 30%;">Component Type:</td>
-                    <td style="padding: 8px;">${component_type}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 8px; background: #e9ecef; font-weight: bold;">Quantity:</td>
-                    <td style="padding: 8px;">${quantity || 'Not specified'}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 8px; background: #e9ecef; font-weight: bold;">Material:</td>
-                    <td style="padding: 8px;">${material || 'Not specified'}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 8px; background: #e9ecef; font-weight: bold;">Timeline:</td>
-                    <td style="padding: 8px;">${timeline || 'Not specified'}</td>
-                  </tr>
-                </table>
-              </div>
-              
-              <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                <h3 style="color: #0A0E27; margin-top: 0;">Description</h3>
-                <p style="background: white; padding: 15px; border-radius: 5px; border-left: 4px solid #00D4FF;">
-                  ${description}
-                </p>
-              </div>
-              
-              ${files.length > 0 ? `
-                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                  <h3 style="color: #0A0E27; margin-top: 0;">Attached Files (${files.length})</h3>
-                  <ul style="list-style-type: none; padding: 0;">
-                    ${files.map(file => `
-                      <li style="padding: 5px; background: white; margin: 5px 0; border-radius: 3px;">
-                        📎 ${file.originalname}
-                      </li>
-                    `).join('')}
-                  </ul>
-                </div>
-              ` : ''}
-              
-              <div style="background: #0A0E27; color: white; padding: 15px; border-radius: 8px; text-align: center;">
-                <p style="margin: 0;">
-                  <strong>Submitted:</strong> ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
-                </p>
-                <p style="margin: 5px 0 0 0; font-size: 14px; opacity: 0.8;">
-                  Engineers India - Precision Machining Solutions
-                </p>
-              </div>
-            </div>
-          `;
-
-          // Prepare attachments
-          const attachments = files.map(file => ({
-            filename: file.originalname,
-            path: file.path
-          }));
-
-          // Send email
-          await getTransporter().sendMail({
-            from: functions.config().email.user,
-            to: 'ei1995@gmail.com',
-            subject: `Quote Request: ${company} - ${component_type}`,
-            html: emailHTML,
-            attachments: attachments
-          });
-
-          // Send WhatsApp notifications
-          await sendWhatsAppAlerts('quote', company);
-
-          // Clean up temporary files
-          files.forEach(file => {
-            try {
-              fs.unlinkSync(file.path);
-            } catch (err) {
-              console.error('Error deleting temp file:', err);
-            }
-          });
-
-          res.json({ 
-            success: true, 
-            message: 'Quote request submitted successfully! We will contact you within 24 hours.' 
-          });
-
-        } catch (error) {
-          console.error('Quote submission error:', error);
-          res.status(500).json({ 
-            success: false, 
-            message: 'Failed to submit quote request. Please try again or call +91 9150400011' 
-          });
-        }
-      });
-
-      bb.end(req.rawBody);
-
-    } catch (error) {
-      console.error('Quote processing error:', error);
-      res.status(500).json({ 
-        success: false, 
-        message: 'Server error. Please try again.' 
-      });
-    }
-  });
-});
 
 // Contact form submission
 exports.submitContact = functions.https.onRequest((req, res) => {
-  cors(req, res, async () => {
-    if (req.method !== 'POST') {
-      return res.status(405).json({ success: false, message: 'Method not allowed' });
-    }
+  return cors(req, res, async () => {
+    console.log('=== Contact Request ===');
+
+    if (req.method === 'OPTIONS') return res.status(204).send('');
+    if (req.method !== 'POST') return res.status(405).json({ success: false, message: 'Method not allowed' });
 
     try {
       const { name, company, email, phone, subject, message } = req.body;
 
-      // Validate required fields
       if (!name || !email || !subject || !message) {
-        return res.status(400).json({ 
-          success: false, 
-          message: 'Please fill in all required fields' 
-        });
+        return res.status(400).json({ success: false, message: 'Missing required fields' });
       }
 
-      // Create detailed email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        return res.status(400).json({ success: false, message: 'Invalid email' });
+      }
+
       const emailHTML = `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #0A0E27; border-bottom: 3px solid #00D4FF; padding-bottom: 10px;">
-            New Contact Message - Engineers India
-          </h2>
-          
-          <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="color: #0A0E27; margin-top: 0;">Contact Information</h3>
-            <table style="width: 100%; border-collapse: collapse;">
-              <tr>
-                <td style="padding: 8px; background: #e9ecef; font-weight: bold; width: 30%;">Name:</td>
-                <td style="padding: 8px;">${name}</td>
-              </tr>
-              <tr>
-                <td style="padding: 8px; background: #e9ecef; font-weight: bold;">Company:</td>
-                <td style="padding: 8px;">${company || 'Not provided'}</td>
-              </tr>
-              <tr>
-                <td style="padding: 8px; background: #e9ecef; font-weight: bold;">Email:</td>
-                <td style="padding: 8px;">${email}</td>
-              </tr>
-              <tr>
-                <td style="padding: 8px; background: #e9ecef; font-weight: bold;">Phone:</td>
-                <td style="padding: 8px;">${phone || 'Not provided'}</td>
-              </tr>
-              <tr>
-                <td style="padding: 8px; background: #e9ecef; font-weight: bold;">Subject:</td>
-                <td style="padding: 8px;">${subject}</td>
-              </tr>
-            </table>
+        <div style="font-family: Arial; max-width: 600px;">
+          <h2 style="color: #0A0E27; border-bottom: 3px solid #00D4FF;">New Contact - Engineers India</h2>
+          <div style="background: #f8f9fa; padding: 20px; margin: 20px 0;">
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Company:</strong> ${company || 'Not provided'}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
+            <p><strong>Subject:</strong> ${subject}</p>
+            <p><strong>Message:</strong><br>${message.replace(/\n/g, '<br>')}</p>
           </div>
-          
-          <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="color: #0A0E27; margin-top: 0;">Message</h3>
-            <p style="background: white; padding: 15px; border-radius: 5px; border-left: 4px solid #00D4FF;">
-              ${message}
-            </p>
-          </div>
-          
-          <div style="background: #0A0E27; color: white; padding: 15px; border-radius: 8px; text-align: center;">
-            <p style="margin: 0;">
-              <strong>Submitted:</strong> ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
-            </p>
-            <p style="margin: 5px 0 0 0; font-size: 14px; opacity: 0.8;">
-              Engineers India - Precision Machining Solutions
-            </p>
-          </div>
+          <p>Submitted: ${new Date().toLocaleString('en-IN')}</p>
         </div>
       `;
 
-      // Send email
       await getTransporter().sendMail({
-        from: functions.config().email.user,
-        to: 'ei1995@gmail.com',
+        from: process.env.EMAIL_USER,
+        to: ['happyguy0809@gmail.com', 'ei1995@gmail.com', 'gayatri.vadivu@gmail.com'],
         subject: `Contact: ${subject} - ${name}`,
-        html: emailHTML
+        html: emailHTML,
+        replyTo: email
       });
 
-      // Send WhatsApp notifications
-      await sendWhatsAppAlerts('contact', company || name);
+      console.log('Email sent');
 
-      res.json({ 
-        success: true, 
-        message: 'Message sent successfully! We will get back to you soon.' 
-      });
+      try {
+        await sendWhatsAppAlerts('contact', company || name);
+      } catch (e) {
+        console.error('WhatsApp error:', e.message);
+      }
+
+      return res.status(200).json({ success: true, message: 'Message sent successfully!' });
 
     } catch (error) {
-      console.error('Contact submission error:', error);
-      res.status(500).json({ 
-        success: false, 
-        message: 'Failed to send message. Please try again or call +91 9150400011' 
-      });
+      console.error('Contact error:', error.message);
+      return res.status(500).json({ success: false, message: 'Failed to send. Call +91 9150400011' });
     }
   });
+});
+
+// Quote form submission - USING RAWBODY FOR CLOUD FUNCTIONS V2
+exports.submitQuote = functions.https.onRequest(async (req, res) => {
+  console.log('=== START: Quote Request ===');
+  console.log('Method:', req.method);
+  
+  // CORS headers
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.set('Access-Control-Allow-Headers', 'Content-Type');
+  
+  if (req.method === 'OPTIONS') {
+    return res.status(204).send('');
+  }
+
+  // Handle GET for testing
+  if (req.method === 'GET') {
+    return res.status(200).send(`
+      <!DOCTYPE html>
+      <html>
+      <body style="font-family: Arial; max-width: 800px; margin: 50px auto; padding: 20px;">
+        <div style="background: #00D4FF; color: #0A0E27; padding: 20px; border-radius: 10px;">
+          <h1>✅ Quote Endpoint Active</h1>
+          <p>Endpoint is working and ready to receive requests.</p>
+        </div>
+      </body>
+      </html>
+    `);
+  }
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({ success: false, message: 'Method not allowed' });
+  }
+
+  const uploadedFiles = [];
+  
+  try {
+    console.log('Step 1: Getting raw body...');
+    
+    // For Cloud Functions v2, use rawBody
+    const bodyBuffer = req.rawBody || Buffer.from([]);
+    console.log('Step 2: Body size:', bodyBuffer.length);
+    
+    if (bodyBuffer.length === 0) {
+      throw new Error('Empty request body');
+    }
+
+    console.log('Step 3: Initializing busboy...');
+    const Busboy = require('busboy');
+    const busboy = Busboy({ headers: req.headers });
+    
+    const fields = {};
+    const files = [];
+
+    busboy.on('field', (fieldname, value) => {
+      fields[fieldname] = value;
+      console.log(`Field received: ${fieldname}`);
+    });
+
+    busboy.on('file', (fieldname, file, info) => {
+      const { filename } = info;
+      console.log(`File received: ${filename}`);
+      
+      const filepath = path.join(os.tmpdir(), `${Date.now()}-${filename}`);
+      const writeStream = fs.createWriteStream(filepath);
+      file.pipe(writeStream);
+
+      writeStream.on('finish', () => {
+        files.push({ originalname: filename, path: filepath });
+        uploadedFiles.push(filepath);
+        console.log(`File saved: ${filename}`);
+      });
+    });
+
+    console.log('Step 4: Parsing form...');
+    await new Promise((resolve, reject) => {
+      const timeout = setTimeout(() => reject(new Error('Parse timeout')), 30000);
+      
+      busboy.on('finish', () => {
+        clearTimeout(timeout);
+        console.log('Busboy finished');
+        setTimeout(resolve, 100);
+      });
+      
+      busboy.on('error', (err) => {
+        clearTimeout(timeout);
+        console.error('Busboy error:', err);
+        reject(err);
+      });
+      
+      // Feed the raw body to busboy instead of piping request
+      busboy.end(bodyBuffer);
+    });
+
+    console.log('Step 5: Extracting fields...');
+    const { company, contact_person, email, phone, component_type, quantity, material, timeline, description } = fields;
+
+    console.log('Received data:', { company, email, filesCount: files.length });
+
+    if (!company || !contact_person || !email || !component_type || !description) {
+      throw new Error('Missing required fields');
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      throw new Error('Invalid email');
+    }
+
+    console.log('Step 6: Building email...');
+    const emailHTML = `
+      <div style="font-family: Arial; max-width: 600px;">
+        <h2>Quote Request - Engineers India</h2>
+        <div style="background: #f8f9fa; padding: 20px; margin: 20px 0;">
+          <h3>Company Information</h3>
+          <p><strong>Company:</strong> ${company}</p>
+          <p><strong>Contact:</strong> ${contact_person}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Phone:</strong> ${phone || 'N/A'}</p>
+        </div>
+        <div style="background: #f8f9fa; padding: 20px; margin: 20px 0;">
+          <h3>Project Details</h3>
+          <p><strong>Component:</strong> ${component_type}</p>
+          <p><strong>Quantity:</strong> ${quantity || 'N/A'}</p>
+          <p><strong>Material:</strong> ${material || 'N/A'}</p>
+          <p><strong>Timeline:</strong> ${timeline || 'N/A'}</p>
+          <p><strong>Description:</strong> ${description}</p>
+        </div>
+        ${files.length > 0 ? `<p><strong>Attached Files:</strong> ${files.length}</p>` : ''}
+        <p>Submitted: ${new Date().toLocaleString('en-IN')}</p>
+      </div>
+    `;
+
+    console.log('Step 7: Sending email...');
+    await getTransporter().sendMail({
+      from: process.env.EMAIL_USER,
+      to: ['happyguy0809@gmail.com', 'ei1995@gmail.com', 'gayatri.vadivu@gmail.com'],
+      subject: `Quote: ${company} - ${component_type}`,
+      html: emailHTML,
+      attachments: files.map(f => ({ filename: f.originalname, path: f.path }))
+    });
+
+    console.log('Step 8: Email sent successfully!');
+
+    try {
+      await sendWhatsAppAlerts('quote', company);
+    } catch (e) {
+      console.log('WhatsApp skipped:', e.message);
+    }
+
+    console.log('=== SUCCESS ===');
+    return res.status(200).json({ 
+      success: true, 
+      message: 'Quote request submitted successfully! We will contact you within 24 hours.' 
+    });
+
+  } catch (error) {
+    console.error('=== ERROR ===');
+    console.error('Message:', error.message);
+    console.error('Stack:', error.stack);
+    
+    return res.status(500).json({ 
+      success: false, 
+      message: error.message || 'Failed to submit. Please try again or call +91 9150400011'
+    });
+  } finally {
+    console.log('Cleanup...');
+    uploadedFiles.forEach(f => {
+      try { if (fs.existsSync(f)) fs.unlinkSync(f); } catch (e) {}
+    });
+    console.log('=== END ===');
+  }
 });
 
 // Health check
@@ -354,7 +298,7 @@ exports.health = functions.https.onRequest((req, res) => {
     res.json({ 
       status: 'OK', 
       timestamp: new Date().toISOString(),
-      service: 'Engineers India Firebase Functions'
+      service: 'Engineers India Functions'
     });
   });
 });
