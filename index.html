@@ -2282,142 +2282,160 @@
                 gap: 2px;
             }
 
+            /* Tagline at 23% from logo boundary (emblem is 20%) */
             .tagline {
                 font-size: 9px !important;
-                margin-left: 0 !important;
+                margin-left: 23% !important;
+                /* Perfect alignment with text */
                 letter-spacing: 0.3px;
                 white-space: normal;
                 line-height: 1.2;
+                max-width: 75%;
+                /* Prevent overflow */
             }
 
             .logo-img {
                 height: 50px;
                 margin-right: 0;
             }
+        }
 
-            /* Fix 2: Customer section with scroll indicator */
-            .customers-grid {
-                display: flex;
-                overflow-x: auto;
-                gap: 20px;
-                padding-bottom: 40px;
-                /* Extra space for indicator */
-                -webkit-overflow-scrolling: touch;
-                scroll-snap-type: x mandatory;
-                position: relative;
+        @media (max-width: 480px) {
+            .logo-img {
+                height: 45px;
             }
 
-            /* Add scroll indicator */
-            .customers-grid::after {
-                content: 'Swipe to see more →';
-                position: absolute;
-                bottom: 0;
-                left: 50%;
-                transform: translateX(-50%);
-                background: var(--accent);
-                color: white;
-                padding: 6px 16px;
-                border-radius: 20px;
-                font-size: 12px;
-                font-weight: 600;
-                white-space: nowrap;
-                pointer-events: none;
-                animation: pulse 2s infinite;
-                z-index: 10;
+            .tagline {
+                font-size: 8px !important;
+                margin-left: 23% !important;
+                /* Same percentage for consistency */
+                max-width: 75%;
+            }
+        }
+
+        /* Fix 2: Customer section with scroll indicator */
+        .customers-grid {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding-bottom: 40px;
+            /* Extra space for indicator */
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
+            position: relative;
+        }
+
+        /* Add scroll indicator */
+        .customers-grid::after {
+            content: 'Swipe to see more →';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            pointer-events: none;
+            animation: pulse 2s infinite;
+            z-index: 10;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
             }
 
-            @keyframes pulse {
-
-                0%,
-                100% {
-                    opacity: 1;
-                }
-
-                50% {
-                    opacity: 0.6;
-                }
+            50% {
+                opacity: 0.6;
             }
+        }
 
-            .customer-card {
-                flex: 0 0 160px;
-                scroll-snap-align: center;
-            }
+        .customer-card {
+            flex: 0 0 160px;
+            scroll-snap-align: center;
+        }
 
-            /* Fix 3: Proper spacing for hero title - prevent touching header */
-            .hero {
-                margin-top: 80px !important;
-                padding-top: 20px;
-                min-height: calc(100vh - 80px);
-            }
+        /* Fix 3: Proper spacing for hero title - prevent touching header */
+        .hero {
+            margin-top: 80px !important;
+            padding-top: 20px;
+            min-height: calc(100vh - 80px);
+        }
 
-            .hero-text h1 {
-                font-size: 2rem;
-                line-height: 1.3;
-                margin-top: 10px;
-            }
+        .hero-text h1 {
+            font-size: 2rem;
+            line-height: 1.3;
+            margin-top: 10px;
+        }
 
-            /* Fix 4: Equipment card spec boxes staying within bounds */
-            .equipment-card {
-                height: auto;
-                min-height: 340px;
-            }
+        /* Fix 4: Equipment card spec boxes staying within bounds */
+        .equipment-card {
+            height: auto;
+            min-height: 340px;
+        }
 
-            .card-front,
-            .card-back {
-                padding: 1.25rem;
-            }
+        .card-front,
+        .card-back {
+            padding: 1.25rem;
+        }
 
-            .equipment-specs {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 0.75rem;
-                margin-top: 1rem;
-            }
+        .equipment-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
 
-            .spec-item {
-                background: var(--accent-light);
-                padding: 0.6rem 0.5rem;
-                border-radius: 8px;
-                border-left: 3px solid var(--accent);
-                text-align: center;
-                min-height: 60px;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                box-sizing: border-box;
-            }
+        .spec-item {
+            background: var(--accent-light);
+            padding: 0.6rem 0.5rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent);
+            text-align: center;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-sizing: border-box;
+        }
 
-            .spec-label {
-                font-size: 0.7rem;
-                color: var(--text-secondary);
-                margin-bottom: 0.25rem;
-                line-height: 1.2;
-            }
+        .spec-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+            line-height: 1.2;
+        }
 
-            .spec-value {
-                font-weight: 600;
-                color: var(--text-primary);
-                font-size: 0.85rem;
-                line-height: 1.2;
-                word-wrap: break-word;
-            }
+        .spec-value {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            line-height: 1.2;
+            word-wrap: break-word;
+        }
 
-            .card-front h4 {
-                font-size: 1.1rem;
-                margin-bottom: 0.75rem;
-            }
+        .card-front h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
 
-            .card-front p {
-                font-size: 0.88rem;
-                margin-bottom: 1rem;
-                line-height: 1.4;
-            }
+        .card-front p {
+            font-size: 0.88rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
 
-            .card-front .equipment-icon {
-                width: 70px;
-                height: 70px;
-                font-size: 1.3rem;
-            }
+        .card-front .equipment-icon {
+            width: 70px;
+            height: 70px;
+            font-size: 1.3rem;
+        }
         }
 
         /* Small Mobile specific fixes (phones < 480px) */
@@ -2471,363 +2489,6 @@
         }
 
         /* Landscape mobile orientation */
-        @media (max-width: 768px) and (orientation: landscape) {
-            .hero {
-                min-height: auto;
-                padding: 2rem 0;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .logo-container {
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 2px;
-            }
-
-            /* Calculate offset: If logo is 50px wide and emblem takes ~30%, 
-       text starts around 15-18px from left edge */
-            .tagline {
-                font-size: 9px !important;
-                margin-left: 18px !important;
-                /* Align with text portion, not emblem */
-                letter-spacing: 0.3px;
-                white-space: normal;
-                line-height: 1.2;
-            }
-
-            .logo-img {
-                height: 50px;
-                margin-right: 0;
-            }
-        }
-
-        @media (max-width: 480px) {
-
-            /* For smaller phones, adjust proportionally */
-            .logo-img {
-                height: 45px;
-            }
-
-            .tagline {
-                font-size: 8px !important;
-                margin-left: 16px !important;
-                /* Proportional to smaller logo */
-                max-width: 200px;
-            }
-        }
-
-        /* ===== FIX 2: Persistent Scroll Indicator ===== */
-        /* Indicator stays visible until user scrolls to the end */
-        @media (max-width: 768px) {
-
-            /* Add wrapper for positioning */
-            #customers .container {
-                position: relative;
-                padding-bottom: 50px;
-                /* Space for indicator */
-            }
-
-            .customers-grid {
-                display: flex;
-                overflow-x: auto;
-                gap: 20px;
-                padding-bottom: 15px;
-                -webkit-overflow-scrolling: touch;
-                scroll-snap-type: x mandatory;
-                position: relative;
-                /* Hide scrollbar but keep functionality */
-                scrollbar-width: none;
-                /* Firefox */
-                -ms-overflow-style: none;
-                /* IE/Edge */
-            }
-
-            .customers-grid::-webkit-scrollbar {
-                display: none;
-                /* Chrome/Safari */
-            }
-
-            /* Scroll indicator - will be added via JavaScript */
-            .scroll-indicator {
-                position: absolute;
-                bottom: 15px;
-                right: 20px;
-                background: var(--accent);
-                color: white;
-                padding: 6px 16px;
-                border-radius: 20px;
-                font-size: 12px;
-                font-weight: 600;
-                white-space: nowrap;
-                z-index: 10;
-                box-shadow: 0 4px 15px rgba(0, 102, 204, 0.3);
-                transition: opacity 0.3s ease, transform 0.3s ease;
-                pointer-events: none;
-                animation: pulse 2s infinite;
-            }
-
-            .scroll-indicator.hidden {
-                opacity: 0;
-                transform: translateX(20px);
-            }
-
-            @keyframes pulse {
-
-                0%,
-                100% {
-                    opacity: 1;
-                    transform: scale(1);
-                }
-
-                50% {
-                    opacity: 0.7;
-                    transform: scale(1.05);
-                }
-            }
-
-            .customer-card {
-                flex: 0 0 160px;
-                scroll-snap-align: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .scroll-indicator {
-                font-size: 11px;
-                padding: 5px 12px;
-                right: 15px;
-                bottom: 10px;
-            }
-
-            .customer-card {
-                flex: 0 0 140px;
-            }
-        }
-
-        /* ===== FIX 3: Contact Section Alignment ===== */
-        /* Fix "Get in Touch" and contact boxes alignment on mobile */
-        @media (max-width: 768px) {
-            .contact-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-                /* Remove any negative margins or padding issues */
-                margin: 0;
-                padding: 0;
-            }
-
-            .contact-info,
-            .contact-form {
-                /* Ensure boxes don't overflow */
-                width: 100%;
-                max-width: 100%;
-                margin: 0 auto;
-                box-sizing: border-box;
-            }
-
-            .contact-info {
-                padding: 2rem 1.5rem;
-            }
-
-            .contact-info h3,
-            .contact-form h3 {
-                font-size: 1.5rem;
-                margin-bottom: 1.5rem;
-                /* Ensure text doesn't push box */
-                word-wrap: break-word;
-            }
-
-            .contact-item {
-                display: flex;
-                align-items: flex-start;
-                gap: 1rem;
-                margin-bottom: 1.5rem;
-                padding: 1rem;
-                background: white;
-                border-radius: 12px;
-                border-left: 4px solid var(--accent);
-                box-shadow: 0 2px 10px var(--shadow-light);
-                /* Prevent overflow */
-                width: 100%;
-                box-sizing: border-box;
-            }
-
-            .contact-item i {
-                font-size: 1.3rem;
-                color: var(--accent);
-                margin-top: 0.25rem;
-                flex-shrink: 0;
-                /* Icon doesn't shrink */
-                width: 24px;
-                /* Fixed width for alignment */
-            }
-
-            .contact-item div {
-                flex: 1;
-                min-width: 0;
-                /* Allow text to wrap */
-            }
-
-            /* Ensure container has proper padding */
-            .contact .container {
-                padding: 0 1.5rem;
-                max-width: 100%;
-                overflow-x: hidden;
-                /* Prevent horizontal scroll */
-            }
-
-            /* Form adjustments */
-            .contact-form {
-                padding: 2rem 1.5rem;
-            }
-
-            .form-grid {
-                width: 100%;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-
-            .contact-info,
-            .contact-form {
-                padding: 1.5rem 1rem;
-                border-radius: 15px;
-            }
-
-            .contact-info h3,
-            .contact-form h3 {
-                font-size: 1.3rem;
-            }
-
-            .contact-item {
-                padding: 0.875rem;
-                gap: 0.875rem;
-            }
-
-            .contact-item i {
-                font-size: 1.2rem;
-                width: 22px;
-            }
-
-            .contact .container {
-                padding: 0 1rem;
-            }
-        }
-
-        /* ===== OTHER MOBILE FIXES (Keep existing) ===== */
-        @media (max-width: 768px) {
-
-            /* Hero spacing */
-            .hero {
-                margin-top: 80px !important;
-                padding-top: 20px;
-                min-height: calc(100vh - 80px);
-            }
-
-            .hero-text h1 {
-                font-size: 2rem;
-                line-height: 1.3;
-                margin-top: 10px;
-            }
-
-            /* Equipment cards */
-            .equipment-card {
-                height: auto;
-                min-height: 340px;
-            }
-
-            .card-front,
-            .card-back {
-                padding: 1.25rem;
-            }
-
-            .equipment-specs {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 0.75rem;
-                margin-top: 1rem;
-            }
-
-            .spec-item {
-                background: var(--accent-light);
-                padding: 0.6rem 0.5rem;
-                border-radius: 8px;
-                border-left: 3px solid var(--accent);
-                text-align: center;
-                min-height: 60px;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                box-sizing: border-box;
-            }
-
-            .spec-label {
-                font-size: 0.7rem;
-                color: var(--text-secondary);
-                margin-bottom: 0.25rem;
-                line-height: 1.2;
-            }
-
-            .spec-value {
-                font-weight: 600;
-                color: var(--text-primary);
-                font-size: 0.85rem;
-                line-height: 1.2;
-                word-wrap: break-word;
-            }
-
-            .card-front h4 {
-                font-size: 1.1rem;
-                margin-bottom: 0.75rem;
-            }
-
-            .card-front p {
-                font-size: 0.88rem;
-                margin-bottom: 1rem;
-                line-height: 1.4;
-            }
-
-            .card-front .equipment-icon {
-                width: 70px;
-                height: 70px;
-                font-size: 1.3rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero {
-                margin-top: 70px !important;
-            }
-
-            .hero-text h1 {
-                font-size: 1.75rem;
-            }
-
-            .equipment-specs {
-                gap: 0.5rem;
-            }
-
-            .spec-item {
-                padding: 0.5rem 0.4rem;
-                min-height: 55px;
-            }
-
-            .spec-label {
-                font-size: 0.65rem;
-            }
-
-            .spec-value {
-                font-size: 0.8rem;
-            }
-        }
-
-        /* Landscape orientation */
         @media (max-width: 768px) and (orientation: landscape) {
             .hero {
                 min-height: auto;
@@ -4940,90 +4601,6 @@
         window.addEventListener('resize', function () {
             if (window.innerWidth > 768) closeMobileMenu();
         });
-        document.addEventListener('DOMContentLoaded', function () {
-            // Only run on mobile devices
-            if (window.innerWidth <= 768) {
-                initializeScrollIndicator();
-            }
-
-            // Re-initialize on window resize if switching to mobile
-            let resizeTimer;
-            window.addEventListener('resize', function () {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(function () {
-                    const indicator = document.querySelector('.scroll-indicator');
-                    if (window.innerWidth <= 768) {
-                        if (!indicator) {
-                            initializeScrollIndicator();
-                        }
-                    } else {
-                        // Remove indicator on desktop
-                        if (indicator) {
-                            indicator.remove();
-                        }
-                    }
-                }, 250);
-            });
-        });
-
-        function initializeScrollIndicator() {
-            const customersSection = document.getElementById('customers');
-            if (!customersSection) return;
-
-            const customersGrid = customersSection.querySelector('.customers-grid');
-            const container = customersSection.querySelector('.container');
-
-            if (!customersGrid || !container) return;
-
-            // Check if indicator already exists
-            let scrollIndicator = container.querySelector('.scroll-indicator');
-
-            if (!scrollIndicator) {
-                // Create scroll indicator element
-                scrollIndicator = document.createElement('div');
-                scrollIndicator.className = 'scroll-indicator';
-                scrollIndicator.innerHTML = '<i class="fas fa-hand-pointer"></i> Swipe to see more →';
-
-                // Add indicator to customers container
-                container.style.position = 'relative';
-                container.appendChild(scrollIndicator);
-            }
-
-            // Function to check if scrolled to end
-            function checkScrollPosition() {
-                const scrollLeft = customersGrid.scrollLeft;
-                const scrollWidth = customersGrid.scrollWidth;
-                const clientWidth = customersGrid.clientWidth;
-
-                // Calculate if we're at the end (with 30px threshold)
-                const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 30;
-
-                if (isAtEnd) {
-                    scrollIndicator.classList.add('hidden');
-                } else {
-                    scrollIndicator.classList.remove('hidden');
-                }
-            }
-
-            // Listen to scroll events with throttling for performance
-            let scrollTimeout;
-            customersGrid.addEventListener('scroll', function () {
-                if (scrollTimeout) {
-                    clearTimeout(scrollTimeout);
-                }
-                scrollTimeout = setTimeout(checkScrollPosition, 50);
-            }, { passive: true });
-
-            // Initial check
-            checkScrollPosition();
-
-            // Check after images load (logos might affect width)
-            window.addEventListener('load', checkScrollPosition);
-
-            // Check after a short delay (for dynamic content)
-            setTimeout(checkScrollPosition, 500);
-        }
-
 
     </script>
 </body>
