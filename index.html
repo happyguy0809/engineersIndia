@@ -4940,6 +4940,90 @@
         window.addEventListener('resize', function () {
             if (window.innerWidth > 768) closeMobileMenu();
         });
+        document.addEventListener('DOMContentLoaded', function () {
+            // Only run on mobile devices
+            if (window.innerWidth <= 768) {
+                initializeScrollIndicator();
+            }
+
+            // Re-initialize on window resize if switching to mobile
+            let resizeTimer;
+            window.addEventListener('resize', function () {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function () {
+                    const indicator = document.querySelector('.scroll-indicator');
+                    if (window.innerWidth <= 768) {
+                        if (!indicator) {
+                            initializeScrollIndicator();
+                        }
+                    } else {
+                        // Remove indicator on desktop
+                        if (indicator) {
+                            indicator.remove();
+                        }
+                    }
+                }, 250);
+            });
+        });
+
+        function initializeScrollIndicator() {
+            const customersSection = document.getElementById('customers');
+            if (!customersSection) return;
+
+            const customersGrid = customersSection.querySelector('.customers-grid');
+            const container = customersSection.querySelector('.container');
+
+            if (!customersGrid || !container) return;
+
+            // Check if indicator already exists
+            let scrollIndicator = container.querySelector('.scroll-indicator');
+
+            if (!scrollIndicator) {
+                // Create scroll indicator element
+                scrollIndicator = document.createElement('div');
+                scrollIndicator.className = 'scroll-indicator';
+                scrollIndicator.innerHTML = '<i class="fas fa-hand-pointer"></i> Swipe to see more →';
+
+                // Add indicator to customers container
+                container.style.position = 'relative';
+                container.appendChild(scrollIndicator);
+            }
+
+            // Function to check if scrolled to end
+            function checkScrollPosition() {
+                const scrollLeft = customersGrid.scrollLeft;
+                const scrollWidth = customersGrid.scrollWidth;
+                const clientWidth = customersGrid.clientWidth;
+
+                // Calculate if we're at the end (with 30px threshold)
+                const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 30;
+
+                if (isAtEnd) {
+                    scrollIndicator.classList.add('hidden');
+                } else {
+                    scrollIndicator.classList.remove('hidden');
+                }
+            }
+
+            // Listen to scroll events with throttling for performance
+            let scrollTimeout;
+            customersGrid.addEventListener('scroll', function () {
+                if (scrollTimeout) {
+                    clearTimeout(scrollTimeout);
+                }
+                scrollTimeout = setTimeout(checkScrollPosition, 50);
+            }, { passive: true });
+
+            // Initial check
+            checkScrollPosition();
+
+            // Check after images load (logos might affect width)
+            window.addEventListener('load', checkScrollPosition);
+
+            // Check after a short delay (for dynamic content)
+            setTimeout(checkScrollPosition, 500);
+        }
+
 
     </script>
 </body>
