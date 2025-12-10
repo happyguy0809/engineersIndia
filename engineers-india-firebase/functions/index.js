@@ -98,7 +98,7 @@ exports.submitContact = functions.https.onRequest((req, res) => {
 
       await getTransporter().sendMail({
         from: process.env.EMAIL_USER,
-        to: ['happyguy0809@gmail.com', 'ei1995@gmail.com', 'gayatri.vadivu@gmail.com'],
+        to: [ 'ei1995@gmail.com', 'gayatri.vadivu@gmail.com','info@engineersindia.in'],
         subject: `Contact: ${subject} - ${name}`,
         html: emailHTML,
         replyTo: email

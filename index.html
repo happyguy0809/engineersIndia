@@ -647,23 +647,75 @@
         /* Customers Section */
         .customers {
             background: white;
+            overflow: hidden;
+        }
+
+        .customers-scroll-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            padding: 2rem 0;
+        }
+
+        .customers-scroll-container::before,
+        .customers-scroll-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 150px;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .customers-scroll-container::before {
+            left: 0;
+            background: linear-gradient(to right, white, transparent);
+        }
+
+        .customers-scroll-container::after {
+            right: 0;
+            background: linear-gradient(to left, white, transparent);
         }
 
         .customers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
+            display: flex;
+            /* grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 1.5rem; */
+            gap: 40px;
+            animation: scroll 30s linear infinite;
+            width: fit-content;
+        }
+
+        .customers-grid:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
         }
 
         .customer-card {
             background: var(--surface-light);
+            text-align: center;
             border: 1px solid var(--glass-border);
             border-radius: 15px;
-            padding: 2rem 1rem;
-            text-align: center;
-            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            padding: 2rem 1rem;
+            transition: all 0.3s ease;
+            flex: 0 0 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            transition: transform 0.3s ease;
         }
 
         .customer-card::before {
@@ -1813,6 +1865,64 @@
             vertical-align: top;
         }
 
+        .customer-card h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+
+            .customers-scroll-container::before,
+            .customers-scroll-container::after {
+                width: 50px;
+            }
+
+            .customers-grid {
+                gap: 25px;
+                animation: scroll 20s linear infinite;
+            }
+
+            .customer-card {
+                flex: 0 0 160px;
+                padding: 1.5rem 0.75rem;
+            }
+
+            .customer-logo-wrapper {
+                width: 100px;
+                height: 100px;
+            }
+
+            .customer-card h4 {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .customers-grid {
+                gap: 20px;
+                animation: scroll 15s linear infinite;
+            }
+
+            .customer-card {
+                flex: 0 0 140px;
+                padding: 1.25rem 0.5rem;
+            }
+
+            .customer-logo-wrapper {
+                width: 90px;
+                height: 90px;
+            }
+        }
+
+        /* Pause animation on reduced motion preference */
+        @media (prefers-reduced-motion: reduce) {
+            .customers-grid {
+                animation: none;
+            }
+        }
+
         @media (max-width: 768px) {
             .customers-grid {
                 display: flex;
@@ -2325,7 +2435,7 @@
             position: relative;
         }
 
-        /* Add scroll indicator */
+        /* Add scroll indicator
         .customers-grid::after {
             content: 'Swipe to see more →';
             position: absolute;
@@ -2342,7 +2452,7 @@
             pointer-events: none;
             animation: pulse 2s infinite;
             z-index: 10;
-        }
+        } */
 
         @keyframes pulse {
 
@@ -2813,86 +2923,90 @@
             <h2 class="section-title">Trusted by Industry Leaders</h2>
             <p class="section-subtitle">Tier 1 supplier to leading OEMs across automotive, railway, and industrial
                 sectors</p>
-
-            <div class="customers-grid">
-                <div class="customer-card">
-                    <div class="customer-logo-wrapper">
-                        <img src="images/customers/gec-alsthom-logo.png" alt="GEC Alsthom Logo" class="customer-logo">
+            <div class="customers-scroll-container">
+                <div class="customers-grid">
+                    <div class="customer-card">
+                        <div class="customer-logo-wrapper">
+                            <img src="images/customers/gec-alsthom-logo.png" alt="GEC Alsthom Logo"
+                                class="customer-logo">
+                        </div>
+                        <h4>GEC Alsthom</h4>
                     </div>
-                    <h4>GEC Alsthom</h4>
-                </div>
-                <div class="customer-card">
-                    <div class="customer-logo-wrapper">
-                        <img src="images/customers/ashok-leyland-logo.png" alt="Ashok Leyland Logo"
-                            class="customer-logo">
+                    <div class="customer-card">
+                        <div class="customer-logo-wrapper">
+                            <img src="images/customers/ashok-leyland-logo.png" alt="Ashok Leyland Logo"
+                                class="customer-logo">
+                        </div>
+                        <h4>Ashok Leyland</h4>
                     </div>
-                    <h4>Ashok Leyland</h4>
-                </div>
-                <div class="customer-card">
-                    <div class="customer-logo-wrapper">
-                        <img src="images/customers/royal-enfield-logo.png" alt="Royal Enfield Logo"
-                            class="customer-logo">
+                    <div class="customer-card">
+                        <div class="customer-logo-wrapper">
+                            <img src="images/customers/royal-enfield-logo.png" alt="Royal Enfield Logo"
+                                class="customer-logo">
+                        </div>
+                        <h4>Royal Enfield</h4>
                     </div>
-                    <h4>Royal Enfield</h4>
-                </div>
-                <div class="customer-card">
-                    <div class="customer-logo-wrapper">
-                        <img src="images/customers/autolec-logo.png" alt="Autolec Logo" class="customer-logo">
+                    <div class="customer-card">
+                        <div class="customer-logo-wrapper">
+                            <img src="images/customers/autolec-logo.png" alt="Autolec Logo" class="customer-logo">
+                        </div>
+                        <h4>Autolec (SFL Pump)</h4>
                     </div>
-                    <h4>Autolec (SFL Pump)</h4>
-                </div>
-                <div class="customer-card">
-                    <div class="customer-logo-wrapper">
-                        <img src="images/customers/same-deutz-logo.png" alt="Same Deutz Logo" class="customer-logo">
+                    <div class="customer-card">
+                        <div class="customer-logo-wrapper">
+                            <img src="images/customers/same-deutz-logo.png" alt="Same Deutz Logo" class="customer-logo">
+                        </div>
+                        <h4>Same Deutz-Fahr</h4>
                     </div>
-                    <h4>Same Deutz-Fahr</h4>
-                </div>
-                <div class="customer-card">
-                    <div class="customer-logo-wrapper">
-                        <img src="images/customers/brakes-india-logo.png" alt="Brakes India Logo" class="customer-logo">
+                    <div class="customer-card">
+                        <div class="customer-logo-wrapper">
+                            <img src="images/customers/brakes-india-logo.png" alt="Brakes India Logo"
+                                class="customer-logo">
+                        </div>
+                        <h4>Brakes India</h4>
                     </div>
-                    <h4>Brakes India</h4>
-                </div>
-                <div class="customer-card">
-                    <div class="customer-logo-wrapper">
-                        <img src="images/customers/hvf-avadi-logo.jpeg" alt="Heavy Vehicles Factory Logo"
-                            class="customer-logo">
+                    <div class="customer-card">
+                        <div class="customer-logo-wrapper">
+                            <img src="images/customers/hvf-avadi-logo.jpeg" alt="Heavy Vehicles Factory Logo"
+                                class="customer-logo">
+                        </div>
+                        <h4>Heavy Vehicles Factory</h4>
                     </div>
-                    <h4>Heavy Vehicles Factory</h4>
-                </div>
-                <div class="customer-card">
-                    <div class="customer-logo-wrapper">
-                        <img src="images/customers/seyoon-tech-logo.png" alt="Seyoon Tech Logo" class="customer-logo">
+                    <div class="customer-card">
+                        <div class="customer-logo-wrapper">
+                            <img src="images/customers/seyoon-tech-logo.png" alt="Seyoon Tech Logo"
+                                class="customer-logo">
+                        </div>
+                        <h4>Seyoon Tech</h4>
                     </div>
-                    <h4>Seyoon Tech</h4>
-                </div>
-                <div class="customer-card">
-                    <div class="customer-logo-wrapper">
-                        <img src="images/customers/berkel-eng-logo.png" alt="Berkel Engineering Logo"
-                            class="customer-logo">
+                    <div class="customer-card">
+                        <div class="customer-logo-wrapper">
+                            <img src="images/customers/berkel-eng-logo.png" alt="Berkel Engineering Logo"
+                                class="customer-logo">
+                        </div>
+                        <h4>Berkel Engineering</h4>
                     </div>
-                    <h4>Berkel Engineering</h4>
-                </div>
-                <div class="customer-card">
-                    <div class="customer-logo-wrapper">
-                        <img src="images/customers/rane-power-logo.png" alt="Rane Power Steering Logo"
-                            class="customer-logo">
+                    <div class="customer-card">
+                        <div class="customer-logo-wrapper">
+                            <img src="images/customers/rane-power-logo.png" alt="Rane Power Steering Logo"
+                                class="customer-logo">
+                        </div>
+                        <h4>Rane Power Steering</h4>
                     </div>
-                    <h4>Rane Power Steering</h4>
-                </div>
-                <div class="customer-card">
-                    <div class="customer-logo-wrapper">
-                        <img src="images/customers/sanmar-ind-logo.jpeg" alt="Sanmar Industries Logo"
-                            class="customer-logo">
+                    <div class="customer-card">
+                        <div class="customer-logo-wrapper">
+                            <img src="images/customers/sanmar-ind-logo.jpeg" alt="Sanmar Industries Logo"
+                                class="customer-logo">
+                        </div>
+                        <h4>Sanmar Industries</h4>
                     </div>
-                    <h4>Sanmar Industries</h4>
-                </div>
-                <div class="customer-card">
-                    <div class="customer-logo-wrapper">
-                        <img src="images/customers/sibar-auto-logo.png" alt="Sibar Autoparts Logo"
-                            class="customer-logo">
+                    <div class="customer-card">
+                        <div class="customer-logo-wrapper">
+                            <img src="images/customers/sibar-auto-logo.png" alt="Sibar Autoparts Logo"
+                                class="customer-logo">
+                        </div>
+                        <h4>Sibar Autoparts</h4>
                     </div>
-                    <h4>Sibar Autoparts</h4>
                 </div>
             </div>
         </div>
@@ -3642,7 +3756,7 @@
 
             <div class="product-detail-footer">
                 <div class="footer-info">
-                    <i class="fas fa-envelope"></i> Custom manifold designs? Email ei1995@gmail.com
+                    <i class="fas fa-envelope"></i> Custom manifold designs? Email info@engineersindia.in
                 </div>
                 <button class="btn-request-quote" onclick="closeProductDetail('manifolds'); openQuoteModal();">
                     <i class="fas fa-calculator"></i>
@@ -4253,7 +4367,7 @@
                         <i class="fas fa-envelope"></i>
                         <div>
                             <strong>Email</strong><br>
-                            ei1995@gmail.com<br>
+                            info@engineersindia.in<br>
                             <small style="color: var(--text-secondary);">24-hour response guaranteed</small>
                         </div>
                     </div>
