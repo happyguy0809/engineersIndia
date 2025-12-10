@@ -37,8 +37,8 @@ const NOTIFICATION_NUMBERS = ['918800954628', '919150400011', '919176982286'];
 
 async function sendWhatsAppAlerts(alertType, companyName = '') {
   const messages = {
-    quote: `🔔 NEW QUOTE REQUEST\nFrom: ${companyName}\nCheck: happyguy0809@gmail.com`,
-    contact: `📞 NEW CONTACT\nFrom: ${companyName}\nCheck: happyguy0809@gmail.com`
+    quote: `🔔 NEW QUOTE REQUEST\nFrom: ${companyName}\nCheck: info@engineersindia.in`,
+    contact: `📞 NEW CONTACT\nFrom: ${companyName}\nCheck: info@engineersindia.in`
   };
 
   try {
