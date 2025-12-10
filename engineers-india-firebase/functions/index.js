@@ -98,7 +98,7 @@ exports.submitContact = functions.https.onRequest((req, res) => {
 
       await getTransporter().sendMail({
         from: process.env.EMAIL_USER,
-        to: [ 'ei1995@gmail.com', 'gayatri.vadivu@gmail.com','info@engineersindia.in'],
+        to: [ 'ei1995@gmail.com', 'gayatri.vadivu@gmail.com', 'info@engineersindia.in'],
         subject: `Contact: ${subject} - ${name}`,
         html: emailHTML,
         replyTo: email
@@ -254,7 +254,7 @@ exports.submitQuote = functions.https.onRequest(async (req, res) => {
     console.log('Step 7: Sending email...');
     await getTransporter().sendMail({
       from: process.env.EMAIL_USER,
-      to: ['happyguy0809@gmail.com', 'ei1995@gmail.com', 'gayatri.vadivu@gmail.com'],
+      to: ['ei1995@gmail.com', 'gayatri.vadivu@gmail.com','info@engineersindia.in'],
       subject: `Quote: ${company} - ${component_type}`,
       html: emailHTML,
       attachments: files.map(f => ({ filename: f.originalname, path: f.path }))
